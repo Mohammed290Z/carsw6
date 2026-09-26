@@ -1,4 +1,4 @@
-import { BUSINESS, CARS, PLACES } from './config.js';
+import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js';
 import { LANGS, STRINGS } from './i18n.js';
 import META from './cars-meta.js';
 
@@ -349,11 +349,12 @@ form.addEventListener('submit', async e => {
   const btn = $('button[type="submit"]', form);
   btn.disabled = true;
   try {
-    if (BUSINESS.bookingEndpoint) {
-      // only report success once the back office has the request
-      const r = await fetch(BUSINESS.bookingEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(request) });
-      if (!r.ok) throw new Error(r.status);
-      done(t('sent.h'), t('sent.p', { car: `${c.make} ${c.model}`, d1: dateFmt(request.start), d2: dateFmt(request.end) }));
+    if (SUPABASE.url && SUPABASE.anonKey) {
+      // saved in the reservations database; success is only shown once it's really stored
+      const ref = await submitReservation(request);
+      const car = `${c.make} ${c.model}`;
+      const follow = BUSINESS.whatsapp ? waUrl(`${msg}\n${t('sent.refLine', { ref })}`) : null;
+      done(t('sent.h'), t('sent.p', { car, d1: dateFmt(request.start), d2: dateFmt(request.end), ref }), follow);
     } else if (BUSINESS.whatsapp) {
       // no back office yet: hand the request to WhatsApp; the visitor presses Send there
       const url = waUrl(msg);
@@ -362,13 +363,33 @@ form.addEventListener('submit', async e => {
     } else {
       errBox.textContent = t('err.noChannel');
     }
-  } catch {
+  } catch (err) {
+    if (err.message === 'rate_limited') { errBox.textContent = t('err.rate'); return; }
+    if (err.message === 'start_in_past') { errBox.textContent = t('err.past'); return; }
     errBox.textContent = t('err.send', { number: BUSINESS.whatsappDisplay });
     if (BUSINESS.whatsapp) errBox.insertAdjacentHTML('beforeend', ` <a href="${waUrl(msg)}" target="_blank" rel="noopener">${t('wa.open')}</a>`);
   } finally {
     btn.disabled = false;
   }
 });
+async function submitReservation(r) {
+  const headers = { apikey: SUPABASE.anonKey, Authorization: `Bearer ${SUPABASE.anonKey}`, 'Content-Type': 'application/json' };
+  const res = await fetch(`${SUPABASE.url}/rest/v1/rpc/submit_reservation`, {
+    method: 'POST', headers,
+    body: JSON.stringify({
+      p_car: r.car, p_start: r.start, p_start_time: r.startTime || '10:00', p_end: r.end, p_end_time: r.endTime || '10:00',
+      p_place: r.place, p_flight: r.flight || null, p_payment: r.payment, p_name: r.name, p_phone: r.phone,
+      p_lang: r.lang, p_days: r.days, p_estimate: r.estimate, p_website: form.website.value,
+    }),
+  });
+  const body = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(body?.message || `http_${res.status}`);
+  // tell the team by email; fire-and-forget so the visitor never waits on it
+  fetch(`${SUPABASE.url}/functions/v1/notify-reservation`, {
+    method: 'POST', headers, body: JSON.stringify({ ref: body }), keepalive: true,
+  }).catch(() => {});
+  return body;
+}
 function done(title, text, link) {
   $('#doneTitle').textContent = title; $('#doneText').textContent = text;
   const a = $('#doneLink'); a.hidden = !link;
@@ -403,7 +424,8 @@ new IntersectionObserver(([e]) => $('#bookbar').classList.toggle('away', e.isInt
 
 // on localhost, list the business facts still missing from config.js
 if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) && !still) {
-  const missing = Object.entries(BUSINESS).filter(([k, v]) => v === null && !['bookingEndpoint', 'reviewsUrl'].includes(k)).map(([k]) => k);
+  const missing = Object.entries(BUSINESS).filter(([k, v]) => v === null && k !== 'reviewsUrl').map(([k]) => k);
+  if (!SUPABASE.url || !SUPABASE.anonKey) missing.push('SUPABASE (url, anonKey)');
   if (!BUSINESS.reviews.length) missing.push('reviews');
   let dismissed = false; try { dismissed = sessionStorage.getItem('devBanner') === 'off'; } catch {}
   if (missing.length && !dismissed) {

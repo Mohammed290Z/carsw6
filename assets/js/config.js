@@ -16,10 +16,6 @@ export const BUSINESS = {
   whatsapp: null,
   whatsappDisplay: null,  // how it's printed, e.g. '+212 6 12 34 56 78'
 
-  // Optional back office. When set, the booking form POSTs its JSON here and only reports
-  // success when the server answers 2xx. When null, the form hands the request to WhatsApp.
-  bookingEndpoint: null,
-
   // Rental terms (audit 3.4, 4.3)
   depositReleaseHours: null,  // card hold released this many hours after the car is returned, e.g. 72
   insuranceExcess: null,      // MAD, e.g. 10000 → "Assurance tous risques incluse, franchise 10 000 MAD"
@@ -34,6 +30,15 @@ export const BUSINESS = {
   // { name: 'Karim B.', rating: 5, text: '…', date: '2026-08' }
   reviews: [],
   reviewsUrl: null,       // link to the Google Business profile's reviews
+};
+
+/* Reservations back end (Supabase). Both values are public by design: the database's security
+   rules only let visitors submit a request, never read one. Find them in the Supabase dashboard,
+   Project Settings → API ("Project URL" and the "anon public" key). While null, the booking form
+   hands requests to WhatsApp instead. */
+export const SUPABASE = {
+  url: null,       // e.g. 'https://abcdefghijklm.supabase.co'
+  anonKey: null,
 };
 
 /* The fleet. Images come from tools/cutout.py: <img.q> is the front three-quarter view every car

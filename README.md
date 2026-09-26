@@ -29,3 +29,29 @@ at `null` stays hidden. On localhost a banner lists what's still missing.
 4. Add the car to `CARS` in `assets/js/config.js`.
 
 `tools/brand.py` rebuilds the icons and link preview; `tools/logo.py` re-traces the wordmark.
+
+## Reservations back end (Supabase)
+
+Requests from the booking form are stored in Supabase and managed in the panel at
+`/admin/` (https://mohammed290z.github.io/carsw6/admin/).
+
+- `supabase/migrations/` — the database: reservations, team, history, and the security rules.
+  Visitors can only submit a request (through `submit_reservation`, with spam limits); staff read and
+  update; only admins delete or manage the team. Public sign-ups are off.
+- `supabase/functions/notify-reservation` — emails the team about each new request (Resend).
+- `supabase/functions/staff-admin` — invite, change role, remove (admins only).
+- `admin/` — the panel.
+
+### One-time setup
+
+1. Create a Supabase project (region: Paris or Frankfurt). Keep the database password safe.
+2. `npx supabase login`, then `npx supabase link --project-ref <ref>` (asks for the database password).
+3. `npx supabase db push` — creates the tables and rules.
+4. `npx supabase config push` — applies the auth settings (no sign-ups, password rules, redirect URLs).
+5. `npx supabase functions deploy` — deploys both functions.
+6. Email alerts: create a Resend account and an API key, then
+   `npx supabase secrets set RESEND_API_KEY=<key> NOTIFY_TO=<your email>`.
+7. Put the project URL and the `anon` public key in `SUPABASE` in `assets/js/config.js`.
+8. In the Supabase dashboard, Authentication → Users → Add user (your email, auto-confirm). Sign in to
+   `/admin/` with it: the first account to sign in becomes admin. Invite the rest of the team from
+   the panel's Équipe page.

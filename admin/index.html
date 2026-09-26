@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Panneau — CARSW6</title>
+<meta name="theme-color" content="#0B1026">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- sign-in, forgotten password, and choosing a password from an invitation or reset link -->
+<main class="auth" id="auth" hidden>
+  <img class="auth-logo" src="../assets/brand/carsw6-logo-sand.svg" alt="CARSW6" width="176" height="44">
+  <form id="loginForm" class="card">
+    <h1>Panneau des réservations</h1>
+    <label>E-mail <input name="email" type="email" autocomplete="username" required></label>
+    <label>Mot de passe <input name="password" type="password" autocomplete="current-password" required></label>
+    <p class="msg" role="alert"></p>
+    <button class="btn primary" type="submit">Se connecter</button>
+    <button class="link" type="button" data-go="forgot">Mot de passe oublié ?</button>
+  </form>
+  <form id="forgotForm" class="card" hidden>
+    <h1>Mot de passe oublié</h1>
+    <p class="help">Saisissez votre e-mail : vous recevrez un lien pour choisir un nouveau mot de passe.</p>
+    <label>E-mail <input name="email" type="email" autocomplete="username" required></label>
+    <p class="msg" role="alert"></p>
+    <button class="btn primary" type="submit">Envoyer le lien</button>
+    <button class="link" type="button" data-go="login">Retour à la connexion</button>
+  </form>
+  <form id="passwordForm" class="card" hidden>
+    <h1>Choisissez votre mot de passe</h1>
+    <p class="help">Au moins 10 caractères, avec des lettres et des chiffres.</p>
+    <label>Nouveau mot de passe <input name="password" type="password" autocomplete="new-password" minlength="10" required></label>
+    <label>Confirmer <input name="confirm" type="password" autocomplete="new-password" minlength="10" required></label>
+    <p class="msg" role="alert"></p>
+    <button class="btn primary" type="submit">Enregistrer et continuer</button>
+  </form>
+  <div id="setupNote" class="card" hidden>
+    <h1>Panneau pas encore relié</h1>
+    <p class="help">Renseignez <code>SUPABASE.url</code> et <code>SUPABASE.anonKey</code> dans <code>assets/js/config.js</code>, puis rechargez cette page.</p>
+  </div>
+</main>
+
+<div class="app" id="app" hidden>
+  <header class="top">
+    <a class="brand" href="#/"><img src="../assets/brand/carsw6-logo-sand.svg" alt="CARSW6" width="120" height="30"></a>
+    <nav aria-label="Sections">
+      <a href="#/" data-nav="list">Réservations <b class="pill" id="newCount" hidden></b></a>
+      <a href="#/planning" data-nav="planning">Planning</a>
+      <a href="#/equipe" data-nav="team" data-admin hidden>Équipe</a>
+    </nav>
+    <div class="me">
+      <span id="meEmail"></span>
+      <button class="btn ghost small" id="signOut" type="button">Déconnexion</button>
+    </div>
+  </header>
+
+  <!-- reservations -->
+  <section class="view" id="view-list">
+    <div class="tiles" id="tiles"></div>
+    <div class="toolbar">
+      <div class="tabs" role="tablist" id="statusTabs"></div>
+      <input type="search" id="search" placeholder="Nom, téléphone, réf." aria-label="Rechercher">
+      <button class="btn ghost small" id="exportCsv" type="button">Exporter CSV</button>
+    </div>
+    <div class="table-wrap">
+      <table class="list">
+        <thead><tr><th>Réf.</th><th>Reçue</th><th>Client</th><th>Voiture</th><th>Dates</th><th>Livraison</th><th>Paiement</th><th class="num">Estimé</th><th>Statut</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <p class="empty" id="empty" hidden></p>
+    </div>
+  </section>
+
+  <!-- planning -->
+  <section class="view" id="view-planning" hidden>
+    <div class="toolbar">
+      <h2>Planning des voitures</h2>
+      <div class="week-nav">
+        <button class="btn ghost small" type="button" data-shift="-7" aria-label="Semaine précédente">←</button>
+        <button class="btn ghost small" type="button" data-shift="0">Aujourd'hui</button>
+        <button class="btn ghost small" type="button" data-shift="7" aria-label="Semaine suivante">→</button>
+      </div>
+    </div>
+    <div class="planning" id="planning"></div>
+    <p class="legend" id="legend"></p>
+  </section>
+
+  <!-- team (admin) -->
+  <section class="view" id="view-team" hidden>
+    <div class="toolbar"><h2>Équipe</h2></div>
+    <form class="card invite" id="inviteForm">
+      <h3>Inviter un membre</h3>
+      <label>E-mail <input name="email" type="email" required></label>
+      <label>Nom <input name="name" maxlength="80"></label>
+      <label>Rôle
+        <select name="role"><option value="staff">Équipe : voit et traite les réservations</option><option value="admin">Admin : peut aussi supprimer et gérer l'équipe</option></select>
+      </label>
+      <p class="msg" role="alert"></p>
+      <button class="btn primary" type="submit">Envoyer l'invitation</button>
+    </form>
+    <table class="list team"><thead><tr><th>Nom</th><th>E-mail</th><th>Rôle</th><th>Depuis</th><th></th></tr></thead><tbody id="teamRows"></tbody></table>
+  </section>
+</div>
+
+<!-- reservation details -->
+<dialog class="drawer" id="drawer" aria-labelledby="dTitle">
+  <div class="drawer-body" id="drawerBody"></div>
+</dialog>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
