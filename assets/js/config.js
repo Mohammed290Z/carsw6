@@ -39,6 +39,9 @@ export const BUSINESS = {
 export const SUPABASE = {
   url: null,       // e.g. 'https://abcdefghijklm.supabase.co'
   anonKey: null,
+  // Email alert per new request (supabase/functions/notify-reservation, needs a Resend key).
+  // Off for now: new requests show up live in the panel instead.
+  emailAlerts: false,
 };
 
 /* The fleet. Images come from tools/cutout.py: <img.q> is the front three-quarter view every car

@@ -384,8 +384,8 @@ async function submitReservation(r) {
   });
   const body = await res.json().catch(() => null);
   if (!res.ok) throw new Error(body?.message || `http_${res.status}`);
-  // tell the team by email; fire-and-forget so the visitor never waits on it
-  fetch(`${SUPABASE.url}/functions/v1/notify-reservation`, {
+  // tell the team by email (when switched on); fire-and-forget so the visitor never waits on it
+  if (SUPABASE.emailAlerts) fetch(`${SUPABASE.url}/functions/v1/notify-reservation`, {
     method: 'POST', headers, body: JSON.stringify({ ref: body }), keepalive: true,
   }).catch(() => {});
   return body;
