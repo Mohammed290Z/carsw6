@@ -436,7 +436,24 @@ if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) && !still) {
   }
 }
 
+/* ================= Back from NOWPayments ================= */
+// the payment page sends clients back with ?paiement=ok|annule&ref=…
+function paymentReturn() {
+  const outcome = params.get('paiement'), ref = (params.get('ref') ?? '').replace(/[^0-9A-Z]/gi, '').slice(0, 7);
+  if (!['ok', 'annule'].includes(outcome) || !ref) return;
+  $('#payReturn')?.remove();
+  const el = Object.assign(document.createElement('div'), { id: 'payReturn', className: `pay-return ${outcome}`, role: 'status' });
+  el.innerHTML = `<p></p><button type="button"></button>`;
+  el.querySelector('p').textContent = t(outcome === 'ok' ? 'payret.ok' : 'payret.cancel', { ref });
+  const close = el.querySelector('button');
+  close.textContent = t('payret.close');
+  close.onclick = () => { el.remove(); history.replaceState(null, '', location.pathname + location.hash); };
+  document.body.appendChild(el);
+}
+$$('.langs button').forEach(b => b.addEventListener('click', paymentReturn));
+
 /* ================= Start ================= */
 applyLang();
+paymentReturn();
 layout();
 nextFrame(frame);

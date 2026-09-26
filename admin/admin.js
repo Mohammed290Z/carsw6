@@ -12,7 +12,10 @@ const STATUS = {
   new: 'Nouvelle', confirmed: 'Confirmée', paid: 'Payée', delivered: 'Livrée', returned: 'Terminée', cancelled: 'Annulée',
 };
 const ACTIVE = ['confirmed', 'paid', 'delivered'];   // statuses that hold the car
-const PAY_STATUS = { unpaid: 'Non payé', paid: 'Payé', refunded: 'Remboursé' };
+const PAY_STATUS = { unpaid: 'Non payé', awaiting: 'Lien envoyé, en attente', partial: 'Paiement partiel', paid: 'Payé', refunded: 'Remboursé' };
+// NOWPayments' own states, as shown in a reservation's payment history
+const NP_STATUS = { waiting: 'En attente du client', confirming: 'Paiement détecté, confirmation en cours', confirmed: 'Confirmé sur la blockchain',
+  sending: 'Envoi vers votre portefeuille', partially_paid: 'Paiement partiel reçu', finished: 'Payé', failed: 'Échoué', refunded: 'Remboursé', expired: 'Expiré' };
 const DEPOSIT = { none: 'Pas de caution', held: 'Caution bloquée', released: 'Caution libérée' };
 const PAYMENT = { bank: 'Virement', crypto: 'Crypto' };
 const PLACE = { airport: 'Aéroport Mohammed V', hotel: 'Hôtel à Casablanca', private: 'Adresse privée', rabat: 'Rabat', marrakech: 'Marrakech' };
@@ -173,6 +176,10 @@ function listen() {
     }
     render();
     if (openId && payload.new?.id === openId) openDrawer(openId);
+  }).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'payments' }, payload => {
+    const p = payload.new;
+    if (p.status === 'finished') { toast('Paiement crypto reçu.'); chime(); }
+    if (openId && p.reservation_id === openId) { const r = all.find(x => x.id === openId); if (r) loadPayments(r); }
   }).subscribe();
 }
 function chime() {
@@ -288,6 +295,12 @@ function confirmationText(r) {
   if (r.lang === 'ar') return `مرحباً ${r.name}، معك CARSW6. تم تأكيد حجزك ${r.ref}: ${car}، من ${d1} الساعة ${t1} إلى ${d2} الساعة ${t2}، مع التوصيل إلى ${place}. المجموع التقديري: ${total}. سنرسل لك الفاتورة للدفع.`;
   return `Bonjour ${r.name}, c'est CARSW6. Votre réservation ${r.ref} est confirmée : ${car}, du ${d1} à ${t1} au ${d2} à ${t2}, livraison ${place}. Total estimé : ${total}. Nous vous envoyons la facture pour le règlement.`;
 }
+function paymentText(r) {
+  const amount = mad(r.payment_amount ?? r.estimate);
+  if (r.lang === 'en') return `Hello ${r.name}, here is the link to pay for your booking ${r.ref} (${r.car}) in crypto: ${r.payment_url}\nAmount: ${amount}. You can choose USDT, BTC or ETH on the page.`;
+  if (r.lang === 'ar') return `مرحباً ${r.name}، هذا رابط دفع حجزك ${r.ref} (${r.car}) بالعملات المشفرة: ${r.payment_url}\nالمبلغ: ${amount}. يمكنك اختيار USDT أو BTC أو ETH في الصفحة.`;
+  return `Bonjour ${r.name}, voici le lien pour régler votre réservation ${r.ref} (${r.car}) en crypto : ${r.payment_url}\nMontant : ${amount}. Vous pouvez choisir USDT, BTC ou ETH sur la page.`;
+}
 const wa = (phone, text) => `https://wa.me/${String(phone).replace(/\D/g, '')}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
 
 async function openDrawer(id) {
@@ -361,6 +374,24 @@ async function openDrawer(id) {
       </div>
     </div>
 
+    <div class="section crypto">
+      <h3>Paiement crypto (NOWPayments)</h3>
+      ${r.payment_url ? `
+        <p class="help">Lien créé le ${fmtStamp(r.payment_link_at)} pour <b>${mad(r.payment_amount)}</b>${r.paid_at ? ` · payé le ${fmtStamp(r.paid_at)}` : ''}.</p>
+        <div class="contact">
+          <a class="btn small primary" href="${wa(r.phone, paymentText(r))}" target="_blank" rel="noopener">Envoyer le lien sur WhatsApp</a>
+          <button class="btn small" type="button" data-act="copy-link">Copier le lien</button>
+          <a class="btn small ghost" href="${esc(r.payment_url)}" target="_blank" rel="noopener">Ouvrir la page de paiement</a>
+        </div>` : ''}
+      ${r.payment_status !== 'paid' && !['cancelled', 'returned'].includes(r.status) ? `
+        <form class="pay-link" id="payLinkForm">
+          <label>Montant à payer (MAD) <input name="amount" type="number" min="1" step="1" value="${r.payment_amount ?? r.estimate}" required></label>
+          <button class="btn small${r.payment_url ? '' : ' primary'}" type="submit">${r.payment_url ? 'Créer un nouveau lien' : 'Créer le lien de paiement crypto'}</button>
+        </form>
+        ${r.status === 'new' ? '<p class="help">Conseil : confirmez d\'abord la disponibilité, puis envoyez le lien.</p>' : ''}` : ''}
+      <ul class="history" id="payHistory"></ul>
+    </div>
+
     <div class="section">
       <h3>Notes internes</h3>
       <textarea id="notes" placeholder="Visibles par l'équipe uniquement">${esc(r.notes ?? '')}</textarea>
@@ -376,6 +407,14 @@ async function openDrawer(id) {
   `;
   if (!drawer.open) drawer.showModal();
   loadHistory(r);
+  loadPayments(r);
+}
+
+async function loadPayments(r) {
+  const { data } = await sb.from('payments').select('*').eq('reservation_id', r.id).order('created_at', { ascending: false });
+  if (openId !== r.id || !$('#payHistory')) return;
+  $('#payHistory').innerHTML = (data ?? []).map(p => `<li>${fmtStamp(p.created_at)} · <b>${NP_STATUS[p.status] ?? esc(p.status)}</b>${
+    p.actually_paid ? ` · reçu ${esc(p.actually_paid)} ${esc(String(p.pay_currency ?? '').toUpperCase())}` : p.pay_amount ? ` · attendu ${esc(p.pay_amount)} ${esc(String(p.pay_currency ?? '').toUpperCase())}` : ''}</li>`).join('');
 }
 
 async function loadHistory(r) {
@@ -390,7 +429,7 @@ async function loadHistory(r) {
   }[e.kind] ?? esc(e.kind));
   if (openId !== r.id) return;
   $('#history').innerHTML = (data ?? []).map(e =>
-    `<li>${fmtStamp(e.at)} · ${label(e)}${e.actor_email ? ` · ${esc(e.actor_email)}` : ''}</li>`).join('') || '<li>Rien pour le moment.</li>';
+    `<li>${fmtStamp(e.at)} · ${label(e)}${e.actor_email ? ` · ${esc(e.actor_email)}` : e.kind !== 'created' && !e.actor ? ' · NOWPayments' : ''}</li>`).join('') || '<li>Rien pour le moment.</li>';
 }
 
 $('#drawerBody').addEventListener('click', async e => {
@@ -405,6 +444,7 @@ $('#drawerBody').addEventListener('click', async e => {
   if (act === 'cancel' && confirm(`Annuler la réservation ${r.ref} ?`)) await save(r.id, { status: 'cancelled' }, 'Réservation annulée.');
   if (act === 'reopen') await save(r.id, { status: 'new' }, 'Réservation rouverte.');
   if (act === 'notes') await save(r.id, { notes: $('#notes').value.trim() || null }, 'Note enregistrée.');
+  if (act === 'copy-link') { await navigator.clipboard.writeText(r.payment_url); toast('Lien copié.'); }
   if (act === 'delete' && confirm(`Supprimer définitivement la réservation ${r.ref} ? Cette action est irréversible.`)) {
     const { error } = await sb.from('reservations').delete().eq('id', r.id);
     if (error) { toast(`Échec : ${error.message}`, true); return; }
@@ -417,6 +457,24 @@ $('#drawerBody').addEventListener('change', async e => {
   await save(openId, { [field]: e.target.value || null }, 'Enregistré.');
 });
 $('#drawerBody').addEventListener('submit', async e => {
+  if (e.target.id === 'payLinkForm') {
+    e.preventDefault();
+    const btn = $('button', e.target), amount = +e.target.amount.value;
+    btn.disabled = true; btn.textContent = 'Création du lien…';
+    const { data, error } = await sb.functions.invoke('crypto-invoice', { body: { action: 'create', reservation_id: openId, amount } });
+    if (error) {
+      let msg = error.message;
+      try { const j = await error.context.json(); msg = { not_configured: 'NOWPayments n\'est pas encore configuré (clés manquantes).', already_paid: 'Cette réservation est déjà payée.', nowpayments: `NOWPayments a refusé : ${j.message}` }[j.error] ?? j.message ?? j.error; } catch { /* keep generic */ }
+      toast(`Échec : ${msg}`, true);
+      btn.disabled = false; btn.textContent = 'Créer le lien de paiement crypto';
+      return;
+    }
+    const r = all.find(x => x.id === openId);
+    Object.assign(r, { payment: 'crypto', payment_url: data.url, payment_amount: data.amount, payment_link_at: new Date().toISOString(), payment_status: r.payment_status === 'unpaid' ? 'awaiting' : r.payment_status });
+    toast('Lien de paiement créé. Envoyez-le au client.');
+    render(); openDrawer(openId);
+    return;
+  }
   if (e.target.id !== 'editForm') return;
   e.preventDefault();
   const f = e.target;

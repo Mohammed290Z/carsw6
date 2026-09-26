@@ -57,3 +57,27 @@ Requests from the booking form are stored in Supabase and managed in the panel a
 8. In the Supabase dashboard, Authentication → Users → Add user (your email, auto-confirm). Sign in to
    `/admin/` with it: the first account to sign in becomes admin. Invite the rest of the team from
    the panel's Équipe page.
+
+## Crypto payments (NOWPayments)
+
+Staff confirm a reservation, then click **Créer le lien de paiement crypto** in its panel. The client
+pays on NOWPayments' page (USDT, BTC, ETH); NOWPayments notifies `nowpayments-ipn`, which checks the
+signature, re-reads the payment from NOWPayments' API, and marks the reservation paid. Every
+notification is kept in the payment history.
+
+- `supabase/functions/crypto-invoice` — creates the payment link (staff only); `{"action":"health"}` is public
+  and reports whether payments are configured.
+- `supabase/functions/nowpayments-ipn` — the notification endpoint:
+  `https://oacqrhcjvycijrcuukhd.supabase.co/functions/v1/nowpayments-ipn` (sent with each invoice,
+  nothing to configure in NOWPayments).
+
+Setup, in the NOWPayments dashboard: add your payout wallet(s), enable the coins you accept, create
+an API key, and generate the IPN secret key. Then:
+
+```bash
+npx supabase secrets set NOWPAYMENTS_API_KEY=<api key> NOWPAYMENTS_IPN_SECRET=<ipn secret>
+```
+
+To test with NOWPayments' sandbox first, use the sandbox account's keys and add `NOWPAYMENTS_SANDBOX=true`.
+Amounts are sent in MAD; if NOWPayments doesn't accept MAD, set `NOWPAYMENTS_PRICE_CURRENCY=eur` (and
+enter amounts in euros in the panel).

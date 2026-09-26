@@ -75,6 +75,9 @@ export const STRINGS = {
     'footer.hours': 'Concierge disponible 24 h/24, 7 j/7',
     'legal.mentions': 'Mentions légales', 'legal.cgl': 'Conditions générales de location', 'legal.privacy': 'Confidentialité',
     'bar.book': 'Réserver',
+    'payret.ok': p => `Merci, votre paiement pour la réservation ${p.ref} est bien parti. Il est confirmé dès sa validation sur la blockchain, et votre concierge vous écrit sur WhatsApp.`,
+    'payret.cancel': p => `Le paiement de la réservation ${p.ref} n'a pas été finalisé. Vous pouvez reprendre depuis le lien reçu sur WhatsApp.`,
+    'payret.close': 'Fermer',
   },
 
   en: {
@@ -141,6 +144,9 @@ export const STRINGS = {
     'footer.hours': 'Concierge available 24/7',
     'legal.mentions': 'Legal notice', 'legal.cgl': 'Rental terms', 'legal.privacy': 'Privacy',
     'bar.book': 'Book',
+    'payret.ok': p => `Thank you, your payment for booking ${p.ref} is on its way. It is confirmed once validated on the blockchain, and your concierge will message you on WhatsApp.`,
+    'payret.cancel': p => `The payment for booking ${p.ref} was not completed. You can pick it up again from the link you received on WhatsApp.`,
+    'payret.close': 'Close',
   },
 
   ar: {
@@ -207,5 +213,8 @@ export const STRINGS = {
     'footer.hours': 'الكونسيرج متاح على مدار الساعة طوال الأسبوع',
     'legal.mentions': 'إشعار قانوني', 'legal.cgl': 'الشروط العامة للكراء', 'legal.privacy': 'الخصوصية',
     'bar.book': 'احجز',
+    'payret.ok': p => `شكراً، تم إرسال دفعتك للحجز ${p.ref}. يُؤكَّد الدفع فور التحقق منه على البلوكشين، وسيراسلك الكونسيرج عبر واتساب.`,
+    'payret.cancel': p => `لم يكتمل دفع الحجز ${p.ref}. يمكنك المتابعة من الرابط الذي وصلك عبر واتساب.`,
+    'payret.close': 'إغلاق',
   },
 };
