@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wheel anchors</title>
+<!-- Open through the preview server (http://localhost:4174/tools/anchors.html), not as a file. -->
+<style>
+  body{margin:0;font:15px/1.5 system-ui, sans-serif;background:#0B1026;color:#EFE8DC}
+  main{max-width:1200px;margin:0 auto;padding:24px}
+  h1{font-size:22px;margin:0 0 6px}
+  p{color:#9AA2C6;margin:0 0 16px;max-width:75ch}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+  select,button{font:inherit;padding:8px 12px;border-radius:8px;border:1px solid rgba(239,232,220,.25);background:#121A3D;color:inherit}
+  button.primary{background:#D9B26F;color:#0B1026;border-color:#D9B26F}
+  .steps{display:flex;gap:8px}
+  .steps span{padding:4px 10px;border-radius:20px;border:1px solid rgba(239,232,220,.25);color:#9AA2C6}
+  .steps span.now{border-color:#D9B26F;color:#EFE8DC}
+  .steps span.done{color:#D9B26F}
+  .frame{position:relative;display:inline-block;cursor:crosshair;background:#fff}
+  .frame img{display:block;max-width:100%}
+  .dot{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:2px solid #FF4D5E;pointer-events:none}
+  .dot b{position:absolute;left:16px;top:-6px;font-size:12px;color:#FF4D5E;white-space:nowrap}
+  textarea{width:100%;height:140px;margin-top:14px;font:13px ui-monospace, Menlo, monospace;background:#121A3D;color:#EFE8DC;border-radius:8px;border:1px solid rgba(239,232,220,.25);padding:10px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Wheel anchors</h1>
+  <p>Click where each tyre touches the floor, in this order: the rear tyre on the side facing the camera, the front tyre on that side, then the front tyre on the far side. The site uses these points to put the ring around the wheels and the shadow under them. Copy the result into <code>assets/cars/anchors.json</code>, then run <code>tools/cutout.py</code>.</p>
+  <div class="bar">
+    <select id="photo"></select>
+    <div class="steps" id="steps"></div>
+    <button type="button" id="undo">Undo</button>
+    <button type="button" class="primary" id="copy">Copy JSON</button>
+  </div>
+  <div class="frame" id="frame"><img id="img" alt=""></div>
+  <textarea id="out" readonly aria-label="Anchor JSON"></textarea>
+</main>
+<script type="module">
+const ORDER = [['nearRear', 'Near rear'], ['nearFront', 'Near front'], ['farFront', 'Far front']];
+const $ = s => document.querySelector(s);
+const meta = await fetch('../assets/cars/cars.json').then(r => r.json());
+const saved = await fetch('../assets/cars/anchors.json').then(r => r.ok ? r.json() : {}).catch(() => ({}));
+const names = Object.keys(meta);
+$('#photo').innerHTML = names.map(n => `<option>${n}</option>`).join('');
+let points = {};
+
+function load() {
+  const name = $('#photo').value;
+  points = structuredClone(saved[name] || {});
+  $('#img').src = `../assets/cars/originals/${name}.png`;
+  $('#img').onload = render;
+}
+function render() {
+  const img = $('#img'), k = img.clientWidth / img.naturalWidth;
+  $('#frame').querySelectorAll('.dot').forEach(d => d.remove());
+  ORDER.forEach(([key, label]) => {
+    const p = points[key]; if (!p) return;
+    const d = Object.assign(document.createElement('i'), { className: 'dot' });
+    d.style.left = `${p[0] * k}px`; d.style.top = `${p[1] * k}px`;
+    d.innerHTML = `<b>${label}</b>`;
+    $('#frame').appendChild(d);
+  });
+  const next = ORDER.findIndex(([key]) => !points[key]);
+  $('#steps').innerHTML = ORDER.map(([key, label], i) => `<span class="${points[key] ? 'done' : i === next ? 'now' : ''}">${label}</span>`).join('');
+  $('#out').value = `"${$('#photo').value}": ${JSON.stringify(points)}`;
+}
+$('#frame').addEventListener('click', e => {
+  const img = $('#img'), r = img.getBoundingClientRect(), k = img.naturalWidth / img.clientWidth;
+  const next = ORDER.find(([key]) => !points[key]);
+  if (!next) return;
+  points[next[0]] = [Math.round((e.clientX - r.left) * k), Math.round((e.clientY - r.top) * k)];
+  render();
+});
+$('#undo').onclick = () => { const last = [...ORDER].reverse().find(([key]) => points[key]); if (last) { delete points[last[0]]; render(); } };
+$('#copy').onclick = () => navigator.clipboard.writeText($('#out').value);
+$('#photo').onchange = load;
+addEventListener('resize', render);
+load();
+</script>
+</body>
+</html>

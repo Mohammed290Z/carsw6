@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CARSW6 — Location de voitures premium à Casablanca</title>
+<meta name="description" content="Location de voitures premium à Casablanca : Range Rover Sport, Mercedes-AMG CLA 45 S et Audi RS 3, livrées à l'aéroport Mohammed V, à votre hôtel ou à votre villa.">
+<meta name="theme-color" content="#0B1026">
+<!-- Link previews (WhatsApp, iMessage, social). og:image must be an absolute URL once the domain is live. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CARSW6">
+<meta property="og:title" content="CARSW6 — Location de voitures premium à Casablanca">
+<meta property="og:description" content="Range Rover Sport, Mercedes-AMG CLA 45 S, Audi RS 3. Livrées à l'aéroport Mohammed V, à votre hôtel ou à votre villa.">
+<meta property="og:image" content="assets/brand/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:locale:alternate" content="ar_MA">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+<!-- hero car: fetched early so it paints with the headline -->
+<link rel="preload" as="image" type="image/avif" imagesrcset="assets/cars/range-rover-sport-34-800.avif 800w, assets/cars/range-rover-sport-34-1200.avif 1200w, assets/cars/range-rover-sport-34-1600.avif 1600w" imagesizes="(max-width: 759px) 92vw, 60vw">
+</head>
+<body>
+
+<!-- tablet/desktop: the car travels on this layer from the hero slot to the showroom slot -->
+<div class="stage-layer" id="stageLayer"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<header id="top">
+  <a class="logo" href="#accueil"><img src="assets/brand/carsw6-logo-sand.svg" alt="CARSW6" width="132" height="33"></a>
+  <nav data-i18n-attr="aria-label:nav.label" aria-label="Principale">
+    <a href="#flotte" data-i18n="nav.fleet">La flotte</a>
+    <a href="#deroulement" data-i18n="nav.process">Déroulement</a>
+    <a href="#paiement" data-i18n="nav.payment">Paiement</a>
+  </nav>
+  <div class="langs" role="group" data-i18n-attr="aria-label:lang.label" aria-label="Langue">
+    <button type="button" data-lang="fr" lang="fr" aria-pressed="true">FR</button>
+    <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
+    <button type="button" data-lang="ar" lang="ar" aria-pressed="false">عربي</button>
+  </div>
+  <a class="btn small" href="#reserver" data-i18n="cta.header">Réserver</a>
+</header>
+
+<main>
+  <section class="hero" id="accueil">
+    <div class="hero-car stage-slot" id="heroPhoneSlot">
+      <picture>
+        <source type="image/avif" srcset="assets/cars/range-rover-sport-34-800.avif 800w, assets/cars/range-rover-sport-34-1200.avif 1200w" sizes="92vw">
+        <img src="assets/cars/range-rover-sport-34-800.webp" srcset="assets/cars/range-rover-sport-34-800.webp 800w, assets/cars/range-rover-sport-34-1200.webp 1200w" sizes="92vw"
+             width="800" height="497" alt="Range Rover Sport noir, vue de trois quarts avant" data-car-img="0" fetchpriority="high">
+      </picture>
+    </div>
+    <div>
+      <h1><span data-i18n="hero.l1">Casablanca</span><span data-i18n="hero.l2">se conduit la nuit.</span></h1>
+      <p class="lede" data-i18n="hero.lede">Range Rover, Mercedes-AMG, Audi RS. Livrées à l'aéroport Mohammed V, à votre hôtel ou à votre villa, avec un concierge joignable jour et nuit.</p>
+    </div>
+    <div class="hero-slot" id="heroSlot" aria-hidden="true"></div>
+    <div class="plate">
+      <div class="make" data-bind="make">Range Rover</div>
+      <div class="model" data-bind="model">Sport</div>
+      <div class="price"><b data-bind="price">6 500</b> <span data-bind="perDayCur">MAD par jour</span></div>
+      <a class="btn" href="#reserver" data-book data-bind="cta">Réserver la Range Rover Sport</a>
+    </div>
+    <div class="scrollcue" aria-hidden="true"></div>
+  </section>
+
+  <section id="flotte" data-i18n-attr="aria-label:nav.fleet" aria-label="La flotte">
+    <!-- tablet/desktop: pinned showroom over the 3D floor -->
+    <div class="showroom">
+      <div class="roster">
+        <p class="eyebrow" data-i18n="fleet.eyebrow">La flotte</p>
+        <ul id="roster"></ul>
+      </div>
+      <div class="showroom-slot" id="showroomSlot" aria-hidden="true"></div>
+      <div class="spec">
+        <p class="count fade-swap" data-bind="count">1 sur 3</p>
+        <p class="pitch fade-swap" data-bind="pitch"></p>
+        <dl class="specs fade-swap" id="specs"></dl>
+        <a class="btn" href="#reserver" data-book data-bind="cta">Réserver la Range Rover Sport</a>
+        <a class="skip" href="#reserver" data-i18n="fleet.skip">Passer à la réservation</a>
+      </div>
+    </div>
+    <!-- phone: swipeable cards (audit 4.7) -->
+    <div class="fleet-lite">
+      <p class="eyebrow" data-i18n="fleet.eyebrow">La flotte</p>
+      <ul class="fleet-tabs" id="fleetTabs"></ul>
+      <ul class="fleet-cards" id="fleetCards"></ul>
+    </div>
+  </section>
+
+  <section class="solid" id="deroulement">
+    <h2 class="sec-title" data-i18n="process.title">Trois étapes entre vous et les clés.</h2>
+    <ol class="steps">
+      <li><div class="n">1</div><h3 data-i18n="process.1.h">Choisissez la voiture et vos dates</h3><p data-i18n="process.1.p">Envoyez votre demande depuis cette page. Un concierge confirme la disponibilité sur WhatsApp en moins de 30 minutes.</p></li>
+      <li><div class="n">2</div><h3 data-i18n="process.2.h">Payez après confirmation écrite</h3><p data-i18n="process.2.p">Vous recevez une facture au nom de CARSW6. La location se règle par virement ; la caution est une empreinte bancaire prise à la remise des clés.</p></li>
+      <li><div class="n">3</div><h3 data-i18n="process.3.h">La voiture vient à vous</h3><p data-i18n="process.3.p">Aéroport Mohammed V, hôtel, villa ou bureau. Plein fait, voiture préparée, remise des clés en dix minutes.</p></li>
+    </ol>
+    <p class="requirements" id="requirements" hidden></p>
+  </section>
+
+  <section class="solid" id="paiement">
+    <h2 class="sec-title" data-i18n="pay.title">Payez comme vous le souhaitez.</h2>
+    <p class="sec-intro" data-i18n="pay.intro">Vous ne payez qu'après la confirmation écrite de votre concierge, sur facture au nom de CARSW6.</p>
+    <div class="pay">
+      <article>
+        <h3 data-i18n="pay.bank.h">Virement bancaire</h3>
+        <p data-i18n="pay.bank.p">Nos coordonnées bancaires figurent sur la facture envoyée avec la confirmation. La voiture est bloquée à votre nom dès réception du virement.</p>
+        <ul><li>MAD</li><li>EUR</li><li>USD</li><li data-i18n="pay.bank.intl">Virement international</li></ul>
+      </article>
+      <article id="payCrypto" hidden>
+        <h3 data-i18n="pay.crypto.h">Cryptomonnaie</h3>
+        <p data-i18n="pay.crypto.p">Une adresse de paiement unique est générée pour chaque réservation. Le montant est calculé au cours du moment et figé pendant 15 minutes.</p>
+        <ul><li>USDT (TRC-20, ERC-20)</li><li>Bitcoin</li><li>Ethereum</li></ul>
+      </article>
+      <article>
+        <h3 data-i18n="pay.deposit.h">Caution</h3>
+        <p data-i18n="pay.deposit.p">Une empreinte bancaire sur votre carte à la remise des clés. Rien n'est débité ; l'empreinte est libérée après restitution du véhicule.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="solid" id="avis" hidden>
+    <h2 class="sec-title" data-i18n="reviews.title">Ils ont conduit avec nous</h2>
+    <ul class="reviews" id="reviewList"></ul>
+    <a class="reviews-all" id="reviewsAll" target="_blank" rel="noopener" data-i18n="reviews.all" hidden>Voir tous les avis Google</a>
+  </section>
+
+  <section class="solid" id="reserver">
+    <h2 class="sec-title" data-i18n="book.title">Réservez votre voiture.</h2>
+    <div class="book">
+      <aside class="summary" aria-live="polite">
+        <picture class="side-view" id="sideView"></picture>
+        <div class="make" data-bind="make">Range Rover</div>
+        <div class="model" data-bind="model">Sport</div>
+        <table class="sum-table" data-summary></table>
+        <p class="insurance" data-bind="insurance" hidden></p>
+        <p class="note" data-i18n="sum.note">Tarifs indicatifs, confirmés par votre concierge avec la disponibilité.</p>
+      </aside>
+
+      <div id="bookWrap">
+        <form id="bookForm" novalidate>
+          <div class="field full">
+            <label for="fCar" data-i18n="f.car">Voiture</label>
+            <select id="fCar" name="car"></select>
+          </div>
+          <div class="field full">
+            <label for="fStart" data-i18n="f.start">Prise en charge</label>
+            <div class="pair">
+              <input id="fStart" name="start" type="date" required>
+              <input id="fStartTime" name="startTime" type="time" value="10:00" step="900" data-i18n-attr="aria-label:f.startTime" aria-label="Heure">
+            </div>
+          </div>
+          <div class="field full">
+            <label for="fEnd" data-i18n="f.end">Retour</label>
+            <div class="pair">
+              <input id="fEnd" name="end" type="date" required>
+              <input id="fEndTime" name="endTime" type="time" value="10:00" step="900" data-i18n-attr="aria-label:f.endTime" aria-label="Heure">
+            </div>
+          </div>
+          <div class="field full">
+            <label for="fPlace" data-i18n="f.place">Lieu de livraison</label>
+            <select id="fPlace" name="place"></select>
+          </div>
+          <div class="field full" id="flightField">
+            <label for="fFlight" data-i18n="f.flight">N° de vol (optionnel)</label>
+            <input id="fFlight" name="flight" autocomplete="off" placeholder="AT 201">
+          </div>
+          <fieldset class="field full" id="payField" hidden>
+            <legend class="legend" data-i18n="f.pay">Paiement de la location</legend>
+            <div class="choice">
+              <label><input type="radio" name="pay" value="bank" checked><span data-i18n="f.bank">Virement bancaire</span><small>MAD, EUR, USD</small></label>
+              <label><input type="radio" name="pay" value="crypto"><span data-i18n="f.crypto">Crypto</span><small>USDT, BTC, ETH</small></label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="fName" data-i18n="f.name">Nom complet</label>
+            <input id="fName" name="name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="fPhone" data-i18n="f.phone">WhatsApp</label>
+            <input id="fPhone" name="phone" type="tel" autocomplete="tel" placeholder="+212 6…" dir="ltr" required>
+          </div>
+          <details class="total-toggle">
+            <summary><span data-i18n="sum.total">Total estimé</span> <b data-bind="total">—</b></summary>
+            <table class="sum-table" data-summary></table>
+          </details>
+          <p class="err" id="formErr" role="alert"></p>
+          <button class="btn" type="submit" data-i18n="f.submit">Envoyer ma demande</button>
+          <p class="reassure" data-i18n="f.reassure">Réponse sur WhatsApp en moins de 30 min. Aucun paiement à cette étape.</p>
+        </form>
+        <div class="done" tabindex="-1" id="doneMsg" hidden>
+          <h3 id="doneTitle"></h3>
+          <p id="doneText"></p>
+          <a class="btn" id="doneLink" target="_blank" rel="noopener" hidden></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div>
+    <img class="logo" src="assets/brand/carsw6-logo-sand.svg" alt="CARSW6" width="120" height="30">
+    <p data-i18n="footer.hours">Concierge disponible 24 h/24, 7 j/7</p>
+    <p id="footWa" hidden><a class="wa-link" target="_blank" rel="noopener"></a></p>
+  </div>
+  <div id="footLegal">
+    <p data-bind="legalName" hidden></p>
+    <p data-bind="legalIds" hidden></p>
+    <p data-bind="address" hidden></p>
+  </div>
+  <ul>
+    <li><a href="legal.html#mentions" data-i18n="legal.mentions">Mentions légales</a></li>
+    <li><a href="legal.html#cgl" data-i18n="legal.cgl">Conditions générales de location</a></li>
+    <li><a href="legal.html#confidentialite" data-i18n="legal.privacy">Confidentialité</a></li>
+  </ul>
+</footer>
+
+<!-- phone only -->
+<div class="bookbar" id="bookbar">
+  <div class="price"><b data-bind="priceCur">6 500 MAD</b><span data-bind="perDay">par jour</span></div>
+  <a class="btn" href="#reserver" data-i18n="bar.book">Réserver</a>
+</div>
+<a class="wa-float wa-link" id="waFloat" target="_blank" rel="noopener" hidden data-i18n-attr="aria-label:wa.float" aria-label="Écrire sur WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>
+</a>
+
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

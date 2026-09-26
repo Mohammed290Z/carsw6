@@ -1,0 +1,337 @@
+:root{
+  --ink:#0B1026;
+  --deep:#121A3D;
+  --line:rgba(239,232,220,.14);
+  --brass:#D9B26F;
+  --sand:#EFE8DC;
+  --sand-dim:rgba(239,232,220,.55);   /* 4.6:1 on --ink: the floor for any readable text */
+  --mist:#9AA2C6;
+  --error:#F2A48F;
+  --serif:"Bodoni Moda", "Didot", Georgia, serif;
+  --sans:"Instrument Sans", system-ui, sans-serif;
+  --gutter:clamp(16px, 4vw, 56px);
+  --header-h:84px;
+  /* type scale (audit 2.7) */
+  --h1:88px; --h2:53px; --h3:28px;
+}
+html[lang="ar"]{
+  --serif:"Noto Naskh Arabic", "Amiri", serif;
+  --sans:"IBM Plex Sans Arabic", "Noto Sans Arabic", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--ink);color:var(--sand);-webkit-text-size-adjust:100%;overflow-x:clip}
+/* overflow-x is clipped on html only: clipping body too would make it a scroll container and unpin the showroom */
+body{background:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+::selection{background:var(--brass);color:var(--ink)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:2px}
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:100px}
+#flotte{scroll-margin-top:0}  /* pins to the top itself */
+.visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[hidden]{display:none!important}
+
+/* ---------- Car stage ----------
+   One component for every car, everywhere. The custom properties come from each photo's wheel
+   contact points (tools/cutout.py): --cx/--cy centre of the footprint, --rx/--ry the ring,
+   --cw/--ch a tyre contact shadow, --gy/--gh the backlight. x values are % of the stage width,
+   y values % of its height, so the whole scene scales with the car. */
+.stage-layer{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.car-stage{position:absolute;left:0;top:0;aspect-ratio:var(--ar);will-change:transform}
+.stage-layer .car-stage{opacity:0;transition:opacity .6s cubic-bezier(.16,1,.3,1)}
+.stage-layer .car-stage.on{opacity:1}
+.car-stage > *{position:absolute}
+.car-stage picture{inset:0}
+.car-stage img{width:100%;height:100%}
+/* soft floor instead of a perspective grid: it can't disagree with any photo's camera angle */
+.cs-ground{left:calc(var(--cx) - var(--rx) * 2.6);width:calc(var(--rx) * 5.2);top:calc(var(--cy) - var(--ry) * 3.4);height:calc(var(--ry) * 6.8);
+  background:radial-gradient(closest-side, rgba(217,178,111,.13), rgba(217,178,111,.05) 45%, rgba(217,178,111,0))}
+/* backlight so a black car separates from the navy */
+.cs-glow{left:calc(var(--cx) - var(--rx) * 1.25);width:calc(var(--rx) * 2.5);top:calc(var(--gy) - var(--gh) / 2);height:var(--gh);
+  background:radial-gradient(closest-side, rgba(217,178,111,.17), rgba(217,178,111,0))}
+/* the ring lies on the floor around the wheels; the body hides its far side */
+.cs-ring{left:calc(var(--cx) - var(--rx));width:calc(var(--rx) * 2);top:calc(var(--cy) - var(--ry));height:calc(var(--ry) * 2);
+  border-radius:50%;border:1.5px solid rgba(240,212,156,.8);
+  box-shadow:0 0 16px 1px rgba(217,178,111,.5), inset 0 0 16px rgba(217,178,111,.3);
+  animation:ring-in 1.4s cubic-bezier(.16,1,.3,1) both}
+.cs-ring::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px dotted rgba(255,238,200,.75)}
+@keyframes ring-in{from{opacity:0;transform:scale(.82)}}
+/* contact shadow: broad and soft under the body, darkest right at each tyre */
+.cs-shadow{left:calc(var(--cx) - var(--rx) * .86);width:calc(var(--rx) * 1.72);top:calc(var(--cy) - var(--ry) * .74);height:calc(var(--ry) * 1.48);
+  border-radius:50%;background:radial-gradient(closest-side, rgba(0,0,0,.8), rgba(0,0,0,.45) 55%, rgba(0,0,0,0))}
+.cs-contact{left:calc(var(--x) - var(--cw) / 2);width:var(--cw);top:calc(var(--y) - var(--ch) / 2);height:var(--ch);
+  background:radial-gradient(closest-side, rgba(0,0,0,.95), rgba(0,0,0,.6) 45%, rgba(0,0,0,0))}
+/* the floor glow is wider than the car on purpose; clip it sideways so it never widens the page */
+.stage-slot{position:relative;overflow-x:clip}
+/* where the car stands: hero (right of the headline) and showroom (between list and specs) */
+.hero-slot{position:absolute;inset-inline-end:var(--gutter);top:calc(var(--header-h) + 4px);width:56%;height:58%;pointer-events:none}
+.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(120% 90% at 60% 55%, transparent 45%, rgba(11,16,38,.85) 100%)}
+
+/* ---------- Header ---------- */
+header{position:fixed;inset-block-start:0;inset-inline:0;z-index:30;display:flex;align-items:center;gap:32px;
+  height:var(--header-h);padding:0 var(--gutter);transition:background .4s}
+header.scrolled{background:rgba(11,16,38,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.logo{display:flex;align-items:center;gap:12px;margin-inline-end:auto;text-decoration:none}
+.logo svg{width:34px;height:34px;flex:none}
+.logo span{font-family:"Bodoni Moda", Didot, Georgia, serif;font-style:italic;font-size:26px;letter-spacing:.01em}
+nav{display:flex;gap:28px;font-size:15px}
+nav a{text-decoration:none;color:var(--mist);transition:color .2s}
+nav a:hover{color:var(--sand)}
+.langs{display:flex;gap:2px;padding:3px;border-radius:40px;box-shadow:inset 0 0 0 1px var(--line)}
+.langs button{height:32px;min-width:40px;padding:0 10px;border:0;border-radius:32px;background:none;color:var(--mist);
+  font:500 13px/1 var(--sans);cursor:pointer}
+.langs button[aria-pressed="true"]{background:rgba(239,232,220,.1);color:var(--sand)}
+.langs button[lang="ar"]{font-family:"IBM Plex Sans Arabic", system-ui, sans-serif;font-size:14px}
+
+.btn{--h:52px;position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:var(--h);padding:8px 28px;line-height:1.25;
+  border:0;border-radius:var(--h);cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:600;letter-spacing:.01em;text-decoration:none;text-align:center;
+  color:var(--ink);background:var(--sand);overflow:hidden;isolation:isolate;transition:transform .25s ease}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;
+  background:linear-gradient(100deg, var(--brass), #f4dca8 50%, var(--brass));transform:translateX(-101%);transition:transform .5s cubic-bezier(.7,0,.2,1)}
+[dir="rtl"] .btn::before{transform:translateX(101%)}
+.btn:hover::before{transform:none}
+.btn:active{transform:scale(.97)}
+.btn.small{--h:42px;padding:4px 22px;font-size:14px}
+
+.eyebrow{font-family:var(--sans);font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--mist)}
+html[lang="ar"] .eyebrow{text-transform:none;letter-spacing:0;font-size:14px}
+
+/* ---------- Hero ---------- */
+main{position:relative;z-index:2}
+.hero{position:relative;min-height:100svh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:end;
+  padding:calc(var(--header-h) + 40px) var(--gutter) clamp(36px,7vh,80px);gap:40px}
+.hero h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:var(--h1);line-height:.95;letter-spacing:-.02em}
+/* Naskh sets larger and wider than Bodoni at the same size */
+html[lang="ar"] .hero h1{font-style:normal;letter-spacing:0;line-height:1.3;font-size:calc(var(--h1) * .78)}
+.hero h1 span{display:block}
+.hero .lede{max-width:44ch;margin-top:28px;color:var(--mist);font-size:18px}
+.hero-car{display:none}
+.plate{justify-self:end;text-align:end}
+.plate .make{color:var(--mist);font-size:15px}
+.plate .model{font-family:var(--serif);font-size:var(--h3);line-height:1.1;margin:2px 0 8px}
+.plate .price{font-variant-numeric:tabular-nums;color:var(--brass);margin-bottom:20px}
+.plate .price b{font-family:var(--serif);font-weight:500;font-size:26px;margin-inline-end:4px}
+.scrollcue{position:absolute;inset-inline-start:50%;bottom:22px;width:1px;height:48px;background:rgba(239,232,220,.18);overflow:hidden}
+.scrollcue::after{content:"";position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--brass);animation:cue 2.4s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes cue{to{top:100%}}
+
+/* ---------- Fleet: pinned showroom (≥760px) ---------- */
+#flotte{position:relative}
+.showroom{position:sticky;top:0;height:100svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);
+  padding:calc(var(--header-h) + 26px) var(--gutter) 48px;gap:32px}
+.showroom-slot{grid-column:2;grid-row:1;align-self:center;height:68%}
+.roster{grid-column:1;grid-row:1;align-self:center}
+.roster .eyebrow{margin-bottom:18px}
+.roster ul{list-style:none}
+.roster button{display:flex;flex-direction:column;justify-content:center;width:100%;min-height:64px;text-align:start;background:none;border:0;
+  cursor:pointer;color:var(--sand-dim);font-family:var(--serif);font-size:clamp(26px,2.9vw,44px);line-height:1.1;padding:4px 0;white-space:nowrap;
+  transition:color .4s, transform .5s cubic-bezier(.16,1,.3,1)}
+.roster button:hover{color:rgba(239,232,220,.8)}
+.roster button[aria-current="true"]{color:var(--sand);transform:translateX(14px)}
+[dir="rtl"] .roster button[aria-current="true"]{transform:translateX(-14px)}
+.roster button em{font-family:var(--sans);font-style:normal;font-size:13px;line-height:1.3;margin-bottom:2px;color:inherit}
+.spec{grid-column:3;grid-row:1;align-self:end;justify-self:end;width:min(360px,100%);position:relative;isolation:isolate}
+.spec::before{content:"";position:absolute;inset:-90px -60px -60px -110px;z-index:-1;pointer-events:none;background:radial-gradient(closest-side, rgba(11,16,38,.92) 40%, rgba(11,16,38,0))}
+.spec .count{font-variant-numeric:tabular-nums;color:var(--mist);font-size:14px;margin-bottom:14px}
+.spec .pitch{font-family:var(--serif);font-size:21px;line-height:1.35;margin-bottom:22px;min-height:3.9em}
+.specs{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.specs div{padding:14px 0;border-bottom:1px solid var(--line)}
+.specs div:nth-child(odd){padding-inline-end:16px;border-inline-end:1px solid var(--line)}
+.specs div:nth-child(even){padding-inline-start:16px}
+.specs dt{font-size:13px;color:var(--mist)}
+.specs dd{white-space:nowrap;font-family:var(--serif);font-size:26px;font-variant-numeric:tabular-nums;line-height:1.2}
+.specs dd small{font-family:var(--sans);font-size:13px;color:var(--mist);margin-inline-start:3px}
+.spec .btn{width:100%;margin-top:24px;opacity:1}
+.skip{display:inline-block;margin-top:14px;font-size:14px;color:var(--mist);text-underline-offset:3px}
+.skip:hover{color:var(--sand)}
+.fade-swap{transition:opacity .3s}
+.fade-swap.out{opacity:0}
+.fleet-lite{display:none}
+
+/* ---------- Solid sections ---------- */
+.solid{position:relative;background:var(--ink);padding:clamp(88px,13vh,150px) var(--gutter)}
+.sec-title{font-family:var(--serif);font-weight:400;font-size:var(--h2);line-height:1.05;letter-spacing:-.02em;max-width:18ch}
+html[lang="ar"] .sec-title{letter-spacing:0;line-height:1.35}
+.sec-intro{color:var(--mist);max-width:52ch;margin-top:20px;font-size:18px}
+h3{font-family:var(--serif);font-weight:500;font-size:var(--h3);line-height:1.2}
+
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:72px;border-top:1px solid var(--line)}
+.steps li{padding-block:32px 8px;padding-inline:0 32px}
+.steps li + li{padding-inline-start:32px;border-inline-start:1px solid var(--line)}
+.steps .n{font-family:"Bodoni Moda", Didot, Georgia, serif;font-style:italic;font-size:64px;line-height:1;color:var(--brass)}
+.steps h3{margin:20px 0 10px;max-width:18ch}
+.steps p{color:var(--mist);max-width:36ch}
+.requirements{margin-top:40px;color:var(--sand);max-width:60ch}
+
+#paiement{background:linear-gradient(180deg,var(--ink),var(--deep) 55%,var(--ink))}
+.pay{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,3vw,40px);margin-top:64px}
+.pay article{position:relative;padding:clamp(28px,3.4vw,48px);border-radius:28px;overflow:hidden;
+  background:rgba(11,16,38,.55);box-shadow:inset 0 0 0 1px var(--line)}
+.pay article::after{content:"";position:absolute;inset-block-end:-60%;inset-inline-end:-20%;width:70%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(closest-side, rgba(217,178,111,.12), transparent);pointer-events:none}
+.pay p{color:var(--mist);margin:14px 0 26px;max-width:40ch}
+.pay ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.pay li{padding:8px 14px;border-radius:40px;font-size:14px;box-shadow:inset 0 0 0 1px rgba(239,232,220,.22)}
+
+.reviews{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:56px}
+.reviews li{padding:28px;border-radius:24px;box-shadow:inset 0 0 0 1px var(--line)}
+.reviews .stars{color:var(--brass);letter-spacing:.1em}
+.reviews blockquote{margin:14px 0;font-family:var(--serif);font-size:19px;line-height:1.45}
+.reviews footer{color:var(--mist);font-size:14px}
+.reviews-all{display:inline-block;margin-top:28px;color:var(--mist)}
+
+/* ---------- Booking ---------- */
+#reserver{padding-bottom:clamp(80px,10vh,120px)}
+.book{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,6vw,96px);margin-top:56px;align-items:start}
+.summary{position:sticky;top:110px}
+.summary .side-view{margin:0 0 18px;aspect-ratio:1600/620;display:flex;align-items:flex-end}
+.summary .side-view img{width:100%}
+.summary .model{font-family:var(--serif);font-size:clamp(34px,3.6vw,48px);line-height:1.05;margin:4px 0 22px}
+.summary .make{color:var(--mist)}
+.sum-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.sum-table td{padding:13px 0;white-space:nowrap;border-bottom:1px solid var(--line)}
+.sum-table td:first-child{white-space:normal;padding-inline-end:16px}
+.sum-table td:last-child{text-align:end}
+.sum-table tr.total td{border-bottom:0;padding-top:20px}
+.sum-table tr.total td:last-child{font-family:var(--serif);font-size:34px;color:var(--brass)}
+.summary .insurance{margin-top:16px;color:var(--sand)}
+.summary .note{font-size:14px;color:var(--mist);margin-top:10px;max-width:44ch}
+
+form{display:grid;grid-template-columns:1fr 1fr;gap:22px 20px}
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.field.full{grid-column:1/-1}
+.pair{display:grid;grid-template-columns:1.4fr 1fr;gap:10px}
+label,.legend{font-size:14px;color:var(--mist)}
+input,select{width:100%;height:54px;padding:0 16px;border-radius:14px;border:0;background:rgba(239,232,220,.05);
+  box-shadow:inset 0 0 0 1px var(--line);color:var(--sand);font:500 16px var(--sans);color-scheme:dark;transition:box-shadow .2s}
+input:hover,select:hover{box-shadow:inset 0 0 0 1px rgba(239,232,220,.3)}
+input:focus,select:focus{outline:none;box-shadow:inset 0 0 0 1.5px var(--brass)}
+input[aria-invalid="true"]{box-shadow:inset 0 0 0 1.5px var(--error)}
+select option{background:var(--deep)}
+fieldset{border:0}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.choice label{position:relative;display:block;padding:16px 18px;border-radius:14px;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line);color:var(--sand);transition:box-shadow .2s, background .2s}
+.choice label small{display:block;color:var(--mist);font-size:13px;margin-top:2px}
+.choice input{position:absolute;opacity:0;width:1px;height:1px}
+.choice label:has(input:checked){box-shadow:inset 0 0 0 1.5px var(--brass);background:rgba(217,178,111,.08)}
+.choice label:has(input:focus-visible){outline:2px solid var(--brass);outline-offset:3px}
+.total-toggle{display:none}
+form .btn{grid-column:1/-1;--h:60px;font-size:16px;margin-top:6px}
+.reassure{grid-column:1/-1;margin-top:-8px;font-size:14px;color:var(--mist);text-align:center}
+.err{grid-column:1/-1;color:var(--error);font-size:14px}
+.err:empty{display:none}
+.done{padding:40px;border-radius:28px;box-shadow:inset 0 0 0 1px var(--brass);background:rgba(217,178,111,.06)}
+.done h3{font-size:36px;line-height:1.1;margin-bottom:12px}
+.done p{color:var(--mist);max-width:46ch}
+.done .btn{margin-top:22px}
+
+footer.site{position:relative;z-index:2;background:var(--ink);border-top:1px solid var(--line);padding:48px var(--gutter);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px 40px;color:var(--mist);font-size:14px}
+footer.site .logo span{font-size:22px;color:var(--sand)}
+footer.site p{margin-top:6px}
+footer.site ul{list-style:none;display:grid;gap:6px}
+footer.site a{text-underline-offset:3px}
+
+.wa-float,.bookbar{display:none}
+
+.dev-banner{position:fixed;inset-inline:12px;bottom:12px;z-index:60;padding:12px 16px;border-radius:12px;background:#3a2a10;color:#f6e6c4;
+  font:13px/1.45 ui-monospace, Menlo, monospace;box-shadow:0 0 0 1px var(--brass)}
+.dev-banner button{float:inline-end;background:none;border:0;color:inherit;cursor:pointer;font:inherit;text-decoration:underline}
+
+/* ---------- Tablet ---------- */
+@media (max-width:979px){
+  :root{--h1:54px;--h2:36px;--h3:22px}
+  nav{display:none}
+  .hero{grid-template-columns:1fr;padding-top:52svh}
+  .hero-slot{inset-inline:var(--gutter);width:auto;height:calc(52svh - var(--header-h) - 12px)}
+  .showroom-slot{grid-column:1;grid-row:2}
+  .roster{grid-row:1}
+  .plate{justify-self:start;text-align:start}
+  .showroom{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;gap:0}
+  .roster ul{display:flex;gap:24px}
+  .roster button{font-size:26px}
+  .roster button[aria-current="true"],[dir="rtl"] .roster button[aria-current="true"]{transform:none}
+  .spec{grid-column:1;grid-row:3;width:100%}
+  .spec .pitch{font-size:18px;min-height:0;margin-bottom:14px}
+  .specs dd{font-size:21px}
+  .steps{grid-template-columns:1fr}
+  .steps li,.steps li + li{padding:28px 0;border-inline-start:0;border-bottom:1px solid var(--line)}
+  .book{grid-template-columns:1fr}
+  .summary{position:static}
+}
+
+/* ---------- Phone: no 3D, stacked hero, swipeable fleet, bottom bar ---------- */
+@media (max-width:759px){
+  :root{--h1:44px;--header-h:64px}
+  body{padding-bottom:64px}
+  header{gap:12px}
+  header .btn{display:none}
+  .logo span{font-size:22px}
+  .logo svg{width:28px;height:28px}
+  .stage-layer,.hero-slot,.vignette,.scrollcue{display:none}
+
+  /* audit 2.2: car, then headline, then text, then button */
+  .hero{display:flex;flex-direction:column;align-items:stretch;min-height:0;padding-top:calc(var(--header-h) + 8px);gap:0}
+  .hero-car{display:block;height:38svh;margin:0 calc(-1 * var(--gutter)) 16px}
+  .hero h1{line-height:1.05}
+  .hero .lede{font-size:16px;margin-top:16px}
+  .plate{margin-top:24px}
+  .plate .btn{width:100%}
+
+  #flotte{height:auto!important}
+  .showroom{display:none}
+  .fleet-lite{display:block;padding:40px 0 24px}
+  .fleet-lite .eyebrow{padding:0 var(--gutter);margin-bottom:12px}
+  /* audit 2.3: scrollable tab strip with a fade on the trailing edge */
+  .fleet-tabs{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+    padding:0 var(--gutter);scroll-padding-inline:var(--gutter);margin-bottom:16px;list-style:none;
+    -webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  [dir="rtl"] .fleet-tabs{-webkit-mask-image:linear-gradient(270deg,#000 85%,transparent);mask-image:linear-gradient(270deg,#000 85%,transparent)}
+  .fleet-tabs::-webkit-scrollbar{display:none}
+  .fleet-tabs li{flex:none;scroll-snap-align:start}
+  .fleet-tabs button{min-height:48px;background:none;border:0;color:var(--sand-dim);font:400 22px/1.1 var(--serif);white-space:nowrap;cursor:pointer;text-align:start}
+  .fleet-tabs button em{display:block;font:500 12px/1.3 var(--sans);font-style:normal}
+  .fleet-tabs button[aria-current="true"]{color:var(--sand)}
+  .fleet-cards{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 var(--gutter);scroll-padding-inline:var(--gutter);list-style:none}
+  .fleet-cards::-webkit-scrollbar{display:none}
+  .fleet-cards > li{flex:0 0 88%;scroll-snap-align:center;padding:18px;border-radius:24px;box-shadow:inset 0 0 0 1px var(--line);
+    background:linear-gradient(180deg, rgba(18,26,61,.6), rgba(11,16,38,.2))}
+  .fleet-cards .stage-slot{aspect-ratio:16/10}
+  .fleet-cards h3{margin-top:14px}
+  .fleet-cards .pitch{color:var(--mist);margin:8px 0 14px;font-size:15px}
+  .fleet-cards .btn{width:100%;margin-top:16px}
+
+  .sec-title{max-width:none}
+  .pay{grid-template-columns:1fr}
+  form,.choice{grid-template-columns:1fr}
+  /* audit 4.6: form first, total collapsed above the submit button */
+  .book{display:flex;flex-direction:column}
+  .summary{display:none}
+  .total-toggle{display:block;grid-column:1/-1;border-radius:14px;box-shadow:inset 0 0 0 1px var(--line);padding:0 16px}
+  .total-toggle summary{display:flex;justify-content:space-between;align-items:center;min-height:54px;cursor:pointer;list-style:none;font-variant-numeric:tabular-nums}
+  .total-toggle summary::-webkit-details-marker{display:none}
+  .total-toggle summary b{font-family:var(--serif);font-weight:500;font-size:22px;color:var(--brass)}
+  .total-toggle summary::after{content:"▾";margin-inline-start:8px;color:var(--mist)}
+  .total-toggle[open] summary::after{content:"▴"}
+  .total-toggle .sum-table{margin-bottom:10px}
+
+  /* audit 4.5 + 4.2 */
+  .bookbar{display:flex;position:fixed;inset-inline:0;bottom:0;z-index:40;height:64px;align-items:center;justify-content:space-between;gap:12px;
+    padding:0 16px;background:rgba(11,16,38,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);
+    transition:transform .3s}
+  .bookbar.away{transform:translateY(100%)}
+  .bookbar .price{font-variant-numeric:tabular-nums;color:var(--mist);font-size:14px;line-height:1.2}
+  .bookbar .price b{display:block;font-family:var(--serif);font-weight:500;font-size:20px;color:var(--sand)}
+  .bookbar .btn{--h:48px}
+  .wa-float{display:grid;place-items:center;position:fixed;inset-inline-end:16px;bottom:80px;z-index:41;width:56px;height:56px;border-radius:50%;
+    background:var(--brass);color:var(--ink);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+  .wa-float svg{width:28px;height:28px}
+  .dev-banner{bottom:76px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation:none!important;scroll-behavior:auto!important}
+}
+.still *,.still *::before{transition:none!important;animation:none!important}

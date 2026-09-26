@@ -1,0 +1,45 @@
+{
+  "_about": "Wheel contact points in ORIGINAL photo pixels (assets/cars/originals). nearRear / nearFront: the two tyres on the side facing the camera; farFront: the far-side front tyre. Pick them with tools/anchors.html, then run tools/cutout.py.",
+  "range-rover-sport-34": {
+    "nearRear": [
+      162,
+      695
+    ],
+    "nearFront": [
+      384,
+      738
+    ],
+    "farFront": [
+      931,
+      713
+    ]
+  },
+  "amg-cla45-34": {
+    "nearRear": [
+      180,
+      593
+    ],
+    "nearFront": [
+      488,
+      665
+    ],
+    "farFront": [
+      946,
+      640
+    ]
+  },
+  "audi-rs3-34": {
+    "nearRear": [
+      182,
+      615
+    ],
+    "nearFront": [
+      541,
+      672
+    ],
+    "farFront": [
+      912,
+      645
+    ]
+  }
+}
