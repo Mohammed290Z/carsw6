@@ -65,7 +65,9 @@ section[id]{scroll-margin-top:100px}
 /* the floor glow is wider than the car on purpose; clip it sideways so it never widens the page */
 .stage-slot{position:relative;overflow-x:clip}
 /* where the car stands: hero (right of the headline) and showroom (between list and specs) */
-.hero-slot{position:absolute;inset-inline-end:var(--gutter);top:calc(var(--header-h) + 4px);width:56%;height:58%;pointer-events:none}
+/* desktop hero: the car takes the upper right, clear of the header, and its ring ends above the
+   price block, so the headline and the car share the page instead of competing */
+.hero-slot{position:absolute;inset-inline-end:12%;top:calc(var(--header-h) + 4vh);width:36%;max-width:660px;height:48%;pointer-events:none}
 .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(120% 90% at 60% 55%, transparent 45%, rgba(11,16,38,.85) 100%)}
 
@@ -245,7 +247,7 @@ footer.site a{text-underline-offset:3px}
   :root{--h1:54px;--h2:36px;--h3:22px}
   nav{display:none}
   .hero{grid-template-columns:1fr;padding-top:52svh}
-  .hero-slot{inset-inline:var(--gutter);width:auto;height:calc(52svh - var(--header-h) - 12px)}
+  .hero-slot{inset-inline:var(--gutter);width:auto;max-width:none;top:calc(var(--header-h) + 4px);height:calc(52svh - var(--header-h) - 12px)}
   .showroom-slot{grid-column:1;grid-row:2}
   .roster{grid-row:1}
   .plate{justify-self:start;text-align:start}

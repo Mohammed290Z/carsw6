@@ -26,9 +26,9 @@ export const BUSINESS = {
   minAge: null,               // e.g. 25
   licenseYears: null,         // e.g. 3
 
-  // Crypto (audit 4.4): the Office des Changes has prohibited crypto payments since 2017.
-  // Leave false until a lawyer has confirmed you can accept them.
-  acceptCrypto: false,
+  // Crypto: turned on at the owner's request. Note the Office des Changes has prohibited crypto
+  // payments in Morocco since 2017; set to false to hide every crypto mention on the site.
+  acceptCrypto: true,
 
   // Real Google reviews only, copied with the reviewer's name as shown on Google (audit 4.3).
   // { name: 'Karim B.', rating: 5, text: '…', date: '2026-08' }
