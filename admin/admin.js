@@ -70,7 +70,15 @@ $('#loginForm').addEventListener('submit', async e => {
   const f = e.target, msg = $('.msg', f);
   msg.textContent = '';
   const { error } = await sb.auth.signInWithPassword({ email: f.email.value.trim(), password: f.password.value });
-  if (error) { msg.textContent = 'E-mail ou mot de passe incorrect.'; return; }
+  if (error) {
+    msg.textContent = {
+      invalid_credentials: 'E-mail ou mot de passe incorrect.',
+      email_not_confirmed: "Ce compte n'est pas encore confirmé. Ouvrez le lien reçu par e-mail, ou confirmez-le dans Supabase.",
+      email_provider_disabled: 'La connexion par e-mail est désactivée dans Supabase (Authentication → Providers → Email).',
+      over_request_rate_limit: 'Trop de tentatives. Patientez quelques minutes.',
+    }[error.code] ?? `Connexion impossible : ${error.message}`;
+    return;
+  }
   f.reset();
   await enter();
 });
