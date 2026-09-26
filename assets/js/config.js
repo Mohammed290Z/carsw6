@@ -37,8 +37,8 @@ export const BUSINESS = {
    Project Settings → API ("Project URL" and the "anon public" key). While null, the booking form
    hands requests to WhatsApp instead. */
 export const SUPABASE = {
-  url: null,       // e.g. 'https://abcdefghijklm.supabase.co'
-  anonKey: null,
+  url: 'https://oacqrhcjvycijrcuukhd.supabase.co',
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hY3FyaGNqdnljaWpyY3V1a2hkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0NTMwNTAsImV4cCI6MjEwNjAyOTA1MH0.z8nx99DC-WetWT4hD7rMphqDzNlRzr9irK7E1GlhzgQ',
   // Email alert per new request (supabase/functions/notify-reservation, needs a Resend key).
   // Off for now: new requests show up live in the panel instead.
   emailAlerts: false,
