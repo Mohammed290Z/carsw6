@@ -110,6 +110,14 @@ html[lang="ar"] .hero h1{font-style:normal;letter-spacing:0;line-height:1.3;font
 .hero h1 span{display:block}
 .hero .lede{max-width:44ch;margin-top:28px;color:var(--mist);font-size:18px}
 .hero-car{display:none}
+/* payment methods, right under the headline */
+.hero-pay{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:22px;text-decoration:none;width:fit-content}
+.hero-pay-label{font-size:14px;color:var(--mist);margin-inline-end:4px}
+.hero-pay-crypto{display:contents}
+.hero-pay .chip{padding:6px 12px;border-radius:40px;font-size:13px;font-weight:500;box-shadow:inset 0 0 0 1px rgba(239,232,220,.22);transition:box-shadow .2s}
+.hero-pay .chip.coin{color:var(--brass);box-shadow:inset 0 0 0 1px rgba(217,178,111,.55)}
+.hero-pay:hover .chip{box-shadow:inset 0 0 0 1px rgba(239,232,220,.5)}
+.hero-pay:hover .chip.coin{box-shadow:inset 0 0 0 1px var(--brass)}
 .plate{justify-self:end;text-align:end}
 .plate .make{color:var(--mist);font-size:15px}
 .plate .model{font-family:var(--serif);font-size:var(--h3);line-height:1.1;margin:2px 0 8px}

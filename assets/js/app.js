@@ -1,5 +1,5 @@
 import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=8df0036235';
-import { LANGS, STRINGS } from './i18n.js?v=758cbe5d6b';
+import { LANGS, STRINGS } from './i18n.js?v=cfa3cf9653';
 import META from './cars-meta.js?v=30510c7a1a';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -283,6 +283,8 @@ function buildForm() {
   $('#payCrypto').hidden = !cryptoOn();
   $('#payCryptoCoins').innerHTML = WALLETS.map(w => `<li>${w.coin} (${w.network})</li>`).join('');
   $('#payChoiceCrypto').textContent = WALLETS.map(w => w.coin).join(', ');
+  // homepage: the coins accepted, right under the headline
+  $('#heroCrypto').innerHTML = cryptoOn() ? WALLETS.map(w => `<span class="chip coin">${w.coin}</span>`).join('') : '';
   syncPlace();
 }
 const days = () => {
