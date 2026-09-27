@@ -415,11 +415,3 @@ enabled = true
 # formatted with uppercase keywords, indent 2, max width 180, trailing commas,
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
-
-# NOWPayments calls this directly and can't sign in; it verifies the HMAC signature instead.
-[functions.nowpayments-ipn]
-verify_jwt = false
-
-# The "health" check is public; creating a payment link checks the staff session itself.
-[functions.crypto-invoice]
-verify_jwt = false

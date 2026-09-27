@@ -58,26 +58,15 @@ Requests from the booking form are stored in Supabase and managed in the panel a
    `/admin/` with it: the first account to sign in becomes admin. Invite the rest of the team from
    the panel's Équipe page.
 
-## Crypto payments (NOWPayments)
+## Crypto payments
 
-Staff confirm a reservation, then click **Créer le lien de paiement crypto** in its panel. The client
-pays on NOWPayments' page (USDT, BTC, ETH); NOWPayments notifies `nowpayments-ipn`, which checks the
-signature, re-reads the payment from NOWPayments' API, and marks the reservation paid. Every
-notification is kept in the payment history.
+Clients who choose crypto pay directly when they book: after sending the request, the site shows the
+amount (converted from MAD at the current rate), your wallet address with a copy button and a QR
+code, and which network to use. No payment provider and no WhatsApp step.
 
-- `supabase/functions/crypto-invoice` — creates the payment link (staff only); `{"action":"health"}` is public
-  and reports whether payments are configured.
-- `supabase/functions/nowpayments-ipn` — the notification endpoint:
-  `https://oacqrhcjvycijrcuukhd.supabase.co/functions/v1/nowpayments-ipn` (sent with each invoice,
-  nothing to configure in NOWPayments).
-
-Setup, in the NOWPayments dashboard: add your payout wallet(s), enable the coins you accept, create
-an API key, and generate the IPN secret key. Then:
-
-```bash
-npx supabase secrets set NOWPAYMENTS_API_KEY=<api key> NOWPAYMENTS_IPN_SECRET=<ipn secret>
-```
-
-To test with NOWPayments' sandbox first, use the sandbox account's keys and add `NOWPAYMENTS_SANDBOX=true`.
-Amounts are sent in MAD; if NOWPayments doesn't accept MAD, set `NOWPAYMENTS_PRICE_CURRENCY=eur` (and
-enter amounts in euros in the panel).
+- Wallet addresses: `cryptoWallets` in `assets/js/config.js`. Only coins with an address are offered;
+  with none filled in, the crypto option stays hidden.
+- Rates: `open.er-api.com` (MAD → USD) and CoinGecko (coin → USD), fetched in the visitor's browser.
+  If either is unavailable, the page shows the MAD amount and asks the client to convert it.
+- In the panel, crypto requests arrive as **Crypto à vérifier**: check the wallet, then set
+  *Règlement* to **Payé**.

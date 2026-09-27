@@ -119,7 +119,7 @@
       <article id="payCrypto" hidden>
         <h3 data-i18n="pay.crypto.h">Cryptomonnaie</h3>
         <p data-i18n="pay.crypto.p">Une adresse de paiement unique est générée pour chaque réservation. Le montant est calculé au cours du moment et figé pendant 15 minutes.</p>
-        <ul><li>USDT (TRC-20, ERC-20)</li><li>Bitcoin</li><li>Ethereum</li></ul>
+        <ul id="payCryptoCoins"></ul>
       </article>
       <article>
         <h3 data-i18n="pay.deposit.h">Caution</h3>
@@ -178,7 +178,7 @@
             <legend class="legend" data-i18n="f.pay">Paiement de la location</legend>
             <div class="choice">
               <label><input type="radio" name="pay" value="bank" checked><span data-i18n="f.bank">Virement bancaire</span><small>MAD, EUR, USD</small></label>
-              <label><input type="radio" name="pay" value="crypto"><span data-i18n="f.crypto">Crypto</span><small>USDT, BTC, ETH</small></label>
+              <label><input type="radio" name="pay" value="crypto"><span data-i18n="f.crypto">Crypto</span><small id="payChoiceCrypto"></small></label>
             </div>
           </fieldset>
           <div class="field">
@@ -196,8 +196,27 @@
           <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
           <p class="err" id="formErr" role="alert"></p>
           <button class="btn" type="submit" data-i18n="f.submit">Envoyer ma demande</button>
-          <p class="reassure" data-i18n="f.reassure">Réponse sur WhatsApp en moins de 30 min. Aucun paiement à cette étape.</p>
+          <p class="reassure" data-i18n="f.reassure" aria-live="polite">Réponse sur WhatsApp en moins de 30 min. Aucun paiement à cette étape.</p>
         </form>
+        <!-- shown after a crypto booking: pay straight to our wallet -->
+        <div class="crypto-pay" id="cryptoPay" tabindex="-1" hidden>
+          <h3 id="cpTitle"></h3>
+          <p id="cpLead"></p>
+          <div class="cp-coins" id="cpCoins" role="tablist" data-i18n-attr="aria-label:cpay.choose" aria-label="Crypto"></div>
+          <div class="cp-body">
+            <div class="cp-qr" id="cpQr" aria-hidden="true"></div>
+            <div class="cp-fields">
+              <p class="cp-label" data-i18n="cpay.send">Montant à envoyer</p>
+              <p class="cp-amount"><b id="cpAmount"></b> <button class="cp-copy" type="button" id="cpCopyAmount" data-i18n="cpay.copyAmount">Copier le montant</button></p>
+              <p class="cp-approx" id="cpApprox"></p>
+              <p class="cp-label" id="cpAddrLabel"></p>
+              <p class="cp-addr"><code id="cpAddr" dir="ltr"></code></p>
+              <button class="btn" type="button" id="cpCopyAddr" data-i18n="cpay.copy">Copier l'adresse</button>
+            </div>
+          </div>
+          <p class="cp-warn" id="cpWarn"></p>
+          <p class="cp-keep" id="cpKeep"></p>
+        </div>
         <div class="done" tabindex="-1" id="doneMsg" hidden>
           <h3 id="doneTitle"></h3>
           <p id="doneText"></p>

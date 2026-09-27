@@ -26,6 +26,16 @@ export const BUSINESS = {
   // payments in Morocco since 2017; set to false to hide every crypto mention on the site.
   acceptCrypto: true,
 
+  // Where crypto payments are sent. After a crypto booking, the site shows the address of the
+  // coin the client picks, with a copy button and a QR code. Only coins with an address appear.
+  // Paste each address exactly as your wallet shows it, and double-check the network: a coin sent
+  // on the wrong network is lost.
+  cryptoWallets: [
+    { coin: 'USDT', network: 'TRC-20 (Tron)', address: null, rateId: 'tether',   decimals: 2 },
+    { coin: 'BTC',  network: 'Bitcoin',       address: null, rateId: 'bitcoin',  decimals: 6 },
+    { coin: 'ETH',  network: 'Ethereum (ERC-20)', address: null, rateId: 'ethereum', decimals: 5 },
+  ],
+
   // Real Google reviews only, copied with the reviewer's name as shown on Google (audit 4.3).
   // { name: 'Karim B.', rating: 5, text: '…', date: '2026-08' }
   reviews: [],

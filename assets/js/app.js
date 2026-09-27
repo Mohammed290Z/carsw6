@@ -26,8 +26,13 @@ const fmt1 = n => new Intl.NumberFormat(LANGS[lang].locale, { minimumFractionDig
 const money = n => `${fmt(n)} ${t('currency')}`;
 const isRTL = () => LANGS[lang].dir === 'rtl';
 // strings whose text depends on business settings
+// crypto is offered only when it's switched on and at least one wallet address is filled in
+const WALLETS = (BUSINESS.cryptoWallets ?? []).filter(w => w.address);
+const cryptoOn = () => BUSINESS.acceptCrypto && WALLETS.length > 0;
 const I18N_PARAMS = {
-  'process.2.p': () => ({ crypto: BUSINESS.acceptCrypto }),
+  'process.2.p': () => ({ crypto: cryptoOn() }),
+  'pay.intro': () => ({ crypto: cryptoOn() }),
+  'f.reassure': () => ({ crypto: cryptoOn() && document.querySelector('#bookForm [name=pay]:checked')?.value === 'crypto' }),
   'pay.deposit.p': () => ({ hours: BUSINESS.depositReleaseHours }),
 };
 
@@ -274,8 +279,10 @@ function buildForm() {
   fCar.innerHTML = CARS.map((c, i) => `<option value="${i}">${c.make} ${c.model} — ${money(c.price)} ${t('perDay')}</option>`).join('');
   fPlace.innerHTML = PLACES.map(p => `<option value="${p.id}">${t(`place.${p.id}`)}${p.fee ? ` (+${money(p.fee)})` : ''}</option>`).join('');
   fCar.value = car; fPlace.value = place;
-  $('#payField').hidden = !BUSINESS.acceptCrypto;
-  $('#payCrypto').hidden = !BUSINESS.acceptCrypto;
+  $('#payField').hidden = !cryptoOn();
+  $('#payCrypto').hidden = !cryptoOn();
+  $('#payCryptoCoins').innerHTML = WALLETS.map(w => `<li>${w.coin} (${w.network})</li>`).join('');
+  $('#payChoiceCrypto').textContent = WALLETS.map(w => w.coin).join(', ');
   syncPlace();
 }
 const days = () => {
@@ -338,7 +345,7 @@ form.addEventListener('submit', async e => {
   const place = PLACES.find(p => p.id === fPlace.value);
   const request = {
     car: `${c.make} ${c.model}`, start: fStart.value, startTime: form.startTime.value, end: fEnd.value, endTime: form.endTime.value,
-    place: place.id, flight: place.id === 'airport' ? form.flight.value.trim() : '', payment: BUSINESS.acceptCrypto ? form.pay.value : 'bank',
+    place: place.id, flight: place.id === 'airport' ? form.flight.value.trim() : '', payment: cryptoOn() ? form.pay.value : 'bank',
     name: form.name.value.trim(), phone: form.phone.value.trim(), days: d, estimate: d * c.price + place.fee, lang,
   };
   const msg = t('wa.msg', {
@@ -353,8 +360,12 @@ form.addEventListener('submit', async e => {
       // saved in the reservations database; success is only shown once it's really stored
       const ref = await submitReservation(request);
       const car = `${c.make} ${c.model}`;
-      const follow = BUSINESS.whatsapp ? waUrl(`${msg}\n${t('sent.refLine', { ref })}`) : null;
-      done(t('sent.h'), t('sent.p', { car, d1: dateFmt(request.start), d2: dateFmt(request.end), ref }), follow);
+      if (request.payment === 'crypto') {
+        showCryptoPay(ref, request.estimate);   // pay now: our address, the amount, copy and QR
+      } else {
+        const follow = BUSINESS.whatsapp ? waUrl(`${msg}\n${t('sent.refLine', { ref })}`) : null;
+        done(t('sent.h'), t('sent.p', { car, d1: dateFmt(request.start), d2: dateFmt(request.end), ref }), follow);
+      }
     } else if (BUSINESS.whatsapp) {
       // no back office yet: hand the request to WhatsApp; the visitor presses Send there
       const url = waUrl(msg);
@@ -390,6 +401,70 @@ async function submitReservation(r) {
   }).catch(() => {});
   return body;
 }
+/* ================= Paying in crypto =================
+   After a crypto booking the client sees our wallet for the coin they pick: the amount at the current
+   rate, the address with a copy button, a QR code for phone wallets, and which network to use. */
+let rates = null;
+async function loadRates() {
+  if (rates) return rates;
+  try {
+    const ids = [...new Set(WALLETS.map(w => w.rateId))].join(',');
+    const [fx, px] = await Promise.all([
+      fetch('https://open.er-api.com/v6/latest/MAD').then(r => r.json()),
+      fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`).then(r => r.json()),
+    ]);
+    const usdPerMad = fx?.rates?.USD;
+    if (!usdPerMad) throw new Error('no fx');
+    rates = Object.fromEntries(WALLETS.map(w => [w.coin, px?.[w.rateId]?.usd ? usdPerMad / px[w.rateId].usd : null]));
+  } catch { rates = {}; }
+  return rates;
+}
+let qrLib = null;
+async function qrSvg(text) {
+  try {
+    qrLib ??= (await import('https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/+esm')).default;
+    const q = qrLib(0, 'M'); q.addData(text); q.make();
+    return q.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
+  } catch { return ''; }
+}
+async function showCryptoPay(ref, estimate) {
+  const box = $('#cryptoPay');
+  $('#cpTitle').textContent = t('cpay.h', { ref });
+  $('#cpLead').textContent = t('cpay.lead', { amount: money(estimate) });
+  $('#cpKeep').textContent = t('cpay.keep', { ref });
+  $('#cpCoins').innerHTML = WALLETS.map((w, i) =>
+    `<button type="button" role="tab" data-i="${i}" aria-selected="${i === 0}">${w.coin}</button>`).join('');
+  form.hidden = true; $('#doneMsg').hidden = true; box.hidden = false;
+  box.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+  const r = await loadRates();
+  const pick = async i => {
+    const w = WALLETS[i], rate = r[w.coin];
+    $$('#cpCoins button').forEach(b => b.setAttribute('aria-selected', +b.dataset.i === i));
+    const amount = rate ? (estimate * rate).toFixed(w.decimals) : null;
+    $('#cpAmount').textContent = amount ? `${amount} ${w.coin}` : money(estimate);
+    $('#cpApprox').textContent = amount ? t('cpay.approx', { mad: money(estimate) }) : t('cpay.norate');
+    $('#cpCopyAmount').hidden = !amount;
+    $('#cpCopyAmount').dataset.copy = amount ?? '';
+    $('#cpAddrLabel').textContent = t('cpay.address', { coin: w.coin, network: w.network });
+    $('#cpAddr').textContent = w.address;
+    $('#cpCopyAddr').dataset.copy = w.address;
+    $('#cpWarn').textContent = t('cpay.warn', { coin: w.coin, network: w.network });
+    $('#cpQr').innerHTML = await qrSvg(w.address);
+  };
+  $('#cpCoins').onclick = e => { const b = e.target.closest('button'); if (b) pick(+b.dataset.i); };
+  pick(0);
+}
+$('#cryptoPay').addEventListener('click', async e => {
+  const b = e.target.closest('[data-copy]'); if (!b || !b.dataset.copy) return;
+  try { await navigator.clipboard.writeText(b.dataset.copy); } catch { return; }
+  const label = b.textContent; b.textContent = t('cpay.copied');
+  setTimeout(() => { b.textContent = label; }, 1600);
+});
+// the note under the button follows the payment choice
+form.addEventListener('change', e => {
+  if (e.target.name === 'pay') $('[data-i18n="f.reassure"]').textContent = t('f.reassure', I18N_PARAMS['f.reassure']());
+});
+
 function done(title, text, link) {
   $('#doneTitle').textContent = title; $('#doneText').textContent = text;
   const a = $('#doneLink'); a.hidden = !link;
@@ -426,6 +501,7 @@ new IntersectionObserver(([e]) => $('#bookbar').classList.toggle('away', e.isInt
 if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) && !still) {
   const missing = Object.entries(BUSINESS).filter(([k, v]) => v === null && k !== 'reviewsUrl').map(([k]) => k);
   if (!SUPABASE.url || !SUPABASE.anonKey) missing.push('SUPABASE (url, anonKey)');
+  if (BUSINESS.acceptCrypto && !WALLETS.length) missing.push('cryptoWallets (addresses)');
   if (!BUSINESS.reviews.length) missing.push('reviews');
   let dismissed = false; try { dismissed = sessionStorage.getItem('devBanner') === 'off'; } catch {}
   if (missing.length && !dismissed) {
@@ -436,24 +512,7 @@ if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) && !still) {
   }
 }
 
-/* ================= Back from NOWPayments ================= */
-// the payment page sends clients back with ?paiement=ok|annule&ref=…
-function paymentReturn() {
-  const outcome = params.get('paiement'), ref = (params.get('ref') ?? '').replace(/[^0-9A-Z]/gi, '').slice(0, 7);
-  if (!['ok', 'annule'].includes(outcome) || !ref) return;
-  $('#payReturn')?.remove();
-  const el = Object.assign(document.createElement('div'), { id: 'payReturn', className: `pay-return ${outcome}`, role: 'status' });
-  el.innerHTML = `<p></p><button type="button"></button>`;
-  el.querySelector('p').textContent = t(outcome === 'ok' ? 'payret.ok' : 'payret.cancel', { ref });
-  const close = el.querySelector('button');
-  close.textContent = t('payret.close');
-  close.onclick = () => { el.remove(); history.replaceState(null, '', location.pathname + location.hash); };
-  document.body.appendChild(el);
-}
-$$('.langs button').forEach(b => b.addEventListener('click', paymentReturn));
-
 /* ================= Start ================= */
 applyLang();
-paymentReturn();
 layout();
 nextFrame(frame);

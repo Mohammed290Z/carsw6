@@ -85,6 +85,7 @@ table.list{width:100%;border-collapse:collapse;font-size:14px}
 .list .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .list .ref{font-family:ui-monospace,Menlo,monospace;font-size:13px}
 .list .sub{display:block;color:var(--mist);font-size:12px}
+.list .sub.check{color:var(--st-new);font-weight:600}
 .empty{padding:40px;text-align:center;color:var(--mist)}
 table.team{background:var(--panel);border-radius:16px;box-shadow:inset 0 0 0 1px var(--line);margin-top:18px}
 table.team tbody tr{cursor:default}
@@ -109,10 +110,6 @@ table.team tbody tr{cursor:default}
 .history{list-style:none;display:grid;gap:8px;font-size:13px;color:var(--mist)}
 .history b{color:var(--sand);font-weight:500}
 .contact{display:flex;flex-wrap:wrap;gap:8px}
-.crypto{padding:16px;border-radius:14px;background:rgba(217,178,111,.06);box-shadow:inset 0 0 0 1px rgba(217,178,111,.25);display:grid;gap:12px}
-.crypto h3{margin-bottom:0}
-.pay-link{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px}
-.pay-link label{flex:1 1 180px}
 
 /* ---------- planning ---------- */
 .planning{--days:28;background:var(--panel);border-radius:16px;box-shadow:inset 0 0 0 1px var(--line);overflow:auto}
