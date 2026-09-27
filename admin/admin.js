@@ -1,7 +1,7 @@
 // CARSW6 reservations panel. Talks to Supabase with the signed-in person's own session: what they
 // can see and change is decided by the database's security rules, not by this page.
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm';
-import { BUSINESS, CARS, SUPABASE } from '../assets/js/config.js?v=8df0036235';
+import { BUSINESS, CARS, SUPABASE } from '../assets/js/config.js?v=4ea4faa59d';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -89,7 +89,11 @@ $('#passwordForm').addEventListener('submit', async e => {
   history.replaceState(null, '', location.pathname);
   await enter();
 });
-$('#signOut').addEventListener('click', async () => { await sb.auth.signOut(); location.hash = ''; showAuth('login'); });
+$('#signOut').addEventListener('click', async () => {
+  const sub = await currentSub().catch(() => null);
+  if (sub) { await sb.rpc('unregister_push', { p_endpoint: sub.endpoint }); await sub.unsubscribe(); }
+  await sb.auth.signOut(); location.hash = ''; showAuth('login');
+});
 
 sb.auth.onAuthStateChange(event => {
   if (event === 'PASSWORD_RECOVERY') showAuth('password');
@@ -120,7 +124,91 @@ async function enter() {
   await Promise.all([loadReservations(), loadTeam()]);
   listen();
   route();
+  setupApp();
 }
+
+/* ================= The installable app ================= */
+// the service worker lets the panel install to the home screen and receive notifications
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const pushSupported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+let swReg = null, installPrompt = null;
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').then(r => { swReg = r; refreshPush(); }).catch(() => {});
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); installPrompt = e; showInstall(); });
+addEventListener('appinstalled', () => { $('#installCard').hidden = true; toast('App installée.'); });
+
+function showInstall() {
+  if (!me || standalone) return;
+  try { if (localStorage.getItem('installLater') === '1') return; } catch { /* private mode */ }
+  const how = $('#installHow'), btn = $('#installBtn');
+  if (installPrompt) {
+    how.textContent = 'Elle s\'ouvre en plein écran depuis votre écran d\'accueil et vous prévient à chaque nouvelle demande.';
+    btn.hidden = false;
+  } else if (isIOS) {
+    how.textContent = 'Dans Safari, touchez Partager, puis « Sur l\'écran d\'accueil ». Ouvrez ensuite l\'app depuis son icône pour activer les notifications.';
+    btn.hidden = true;
+  } else return;
+  $('#installCard').hidden = false;
+}
+$('#installBtn').addEventListener('click', async () => {
+  if (!installPrompt) return;
+  installPrompt.prompt();
+  await installPrompt.userChoice;
+  installPrompt = null;
+  $('#installCard').hidden = true;
+});
+$('#installLater').addEventListener('click', () => {
+  $('#installCard').hidden = true;
+  try { localStorage.setItem('installLater', '1'); } catch { /* private mode */ }
+});
+
+function setupApp() {
+  showInstall();
+  refreshPush();
+}
+
+// notifications for new bookings on this device
+const b64ToBytes = s => Uint8Array.from(atob((s + '='.repeat((4 - s.length % 4) % 4)).replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+async function currentSub() { return swReg ? swReg.pushManager.getSubscription() : null; }
+async function refreshPush() {
+  const btn = $('#pushToggle');
+  if (!me || !SUPABASE.vapidPublicKey) return;
+  // on iPhone, notifications only exist inside the installed app
+  if (!pushSupported || (isIOS && !standalone)) { btn.hidden = true; return; }
+  const sub = await currentSub();
+  const on = !!sub && Notification.permission === 'granted';
+  btn.hidden = false;
+  btn.setAttribute('aria-pressed', on);
+  btn.textContent = on ? 'Notifications activées' : Notification.permission === 'denied' ? 'Notifications bloquées' : 'Activer les notifications';
+  if (on) await sb.rpc('register_push', subArgs(sub));   // keep this device tied to whoever is signed in
+}
+const subArgs = sub => {
+  const j = sub.toJSON();
+  return { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_user_agent: navigator.userAgent };
+};
+$('#pushToggle').addEventListener('click', async () => {
+  const sub = await currentSub();
+  if (sub && Notification.permission === 'granted') {
+    await sb.rpc('unregister_push', { p_endpoint: sub.endpoint });
+    await sub.unsubscribe();
+    toast('Notifications désactivées sur cet appareil.');
+    return refreshPush();
+  }
+  if (Notification.permission === 'denied') {
+    toast('Les notifications sont bloquées pour ce site. Autorisez-les dans les réglages du navigateur ou du téléphone.', true);
+    return;
+  }
+  if (await Notification.requestPermission() !== 'granted') { toast('Notifications non autorisées.', true); return; }
+  try {
+    const s = await swReg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(SUPABASE.vapidPublicKey) });
+    const { error } = await sb.rpc('register_push', subArgs(s));
+    if (error) throw error;
+    toast('Notifications activées : vous serez prévenu à chaque nouvelle demande.');
+  } catch (e) {
+    toast(`Impossible d'activer les notifications : ${e.message}`, true);
+  }
+  refreshPush();
+});
 
 /* ================= Data ================= */
 async function loadReservations() {

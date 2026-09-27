@@ -7,10 +7,17 @@
 <title>Panneau — CARSW6</title>
 <meta name="theme-color" content="#0B1026">
 <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<!-- installable app: home-screen icon, full screen, notifications -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CARSW6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="admin.css?v=b12a1beeee">
+<link rel="stylesheet" href="admin.css?v=d5ad60cf69">
 </head>
 <body>
 
@@ -56,6 +63,7 @@
       <a href="#/equipe" data-nav="team" data-admin hidden>Équipe</a>
     </nav>
     <div class="me">
+      <button class="btn ghost small" id="pushToggle" type="button" hidden>Activer les notifications</button>
       <span id="meEmail"></span>
       <button class="btn ghost small" id="signOut" type="button">Déconnexion</button>
     </div>
@@ -63,6 +71,16 @@
 
   <!-- reservations -->
   <section class="view" id="view-list">
+    <div class="install card" id="installCard" hidden>
+      <div>
+        <h3>Installez l'app CARSW6 sur votre téléphone</h3>
+        <p class="help" id="installHow"></p>
+      </div>
+      <div class="install-actions">
+        <button class="btn primary small" id="installBtn" type="button" hidden>Installer l'app</button>
+        <button class="link" id="installLater" type="button">Plus tard</button>
+      </div>
+    </div>
     <div class="tiles" id="tiles"></div>
     <div class="toolbar">
       <div class="tabs" role="tablist" id="statusTabs"></div>
@@ -116,6 +134,6 @@
 
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
-<script type="module" src="admin.js?v=4543a88a64"></script>
+<script type="module" src="admin.js?v=f7ed9882d6"></script>
 </body>
 </html>

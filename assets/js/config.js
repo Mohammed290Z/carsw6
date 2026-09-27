@@ -53,6 +53,9 @@ export const SUPABASE = {
   // Email alert per new request (supabase/functions/notify-reservation, needs a Resend key).
   // Off for now: new requests show up live in the panel instead.
   emailAlerts: false,
+  // Staff app notifications: the public half of the push key pair (the private half is a Supabase
+  // secret). Public by design.
+  vapidPublicKey: 'BManH2cetOp-fBIdYjaOdU6k8q6jbc1FwqRmAKQ2kczWmmFOv9ey3EC5_OZ1BkIPC08A3WDOvTgL5akz-OVLz4M',
 };
 
 /* The fleet. Images come from tools/cutout.py: <img.q> is the front three-quarter view every car

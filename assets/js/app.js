@@ -1,4 +1,4 @@
-import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=8df0036235';
+import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=4ea4faa59d';
 import { LANGS, STRINGS } from './i18n.js?v=cfa3cf9653';
 import META from './cars-meta.js?v=30510c7a1a';
 

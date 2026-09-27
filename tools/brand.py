@@ -36,6 +36,22 @@ def icon(size):
     return img.resize((size, size), Image.LANCZOS)
 
 
+def panel_icon(size, maskable=False):
+    """App icon for the staff panel. Maskable icons keep the logo inside the central 80% safe zone,
+    because Android may crop them to a circle or squircle."""
+    s = 4
+    S = size * s
+    img = Image.new("RGBA", (S, S), INK + (255,))
+    if not maskable:
+        img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+        ImageDraw.Draw(img).rounded_rectangle((0, 0, S - 1, S - 1), radius=S * .2, fill=INK)
+    mark = wordmark(round(S * (.62 if maskable else .8)), SAND)
+    img.alpha_composite(mark, ((S - mark.width) // 2, (S - mark.height) // 2 - round(S * .04)))
+    label = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial.ttf", round(S * .075))
+    ImageDraw.Draw(img).text((S / 2, (S + mark.height) / 2 + S * .03), "PANNEAU", font=label, fill=(217, 178, 111), anchor="ma")
+    return img.resize((size, size), Image.LANCZOS)
+
+
 def og_image():
     car = Image.open(ROOT / "assets/cars/composites/range-rover-sport-34.jpg").convert("RGB")
     car = car.resize((1040, round(car.height * 1040 / car.width)), Image.LANCZOS)
@@ -70,6 +86,11 @@ def main():
     icon(180).save(OUT / "apple-touch-icon.png")
     icon(512).save(OUT / "icon-512.png")
     og_image()
+    (ROOT / "admin/icons").mkdir(exist_ok=True)
+    panel_icon(192).save(ROOT / "admin/icons/icon-192.png")
+    panel_icon(512).save(ROOT / "admin/icons/icon-512.png")
+    panel_icon(512, maskable=True).save(ROOT / "admin/icons/maskable-512.png")
+    panel_icon(180, maskable=True).convert("RGB").save(ROOT / "admin/icons/apple-touch-icon.png")
     print("wrote", sorted(p.name for p in OUT.iterdir()))
 
 
