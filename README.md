@@ -13,6 +13,12 @@ python3 tools/serve.py
 
 Then open http://localhost:4174. Useful URL options: `?lang=en`, `?lang=ar`, `?car=1` (open on a given car).
 
+## Publishing
+
+Run `python3 tools/stamp.py` before each push. It tags every CSS/JS reference with a hash of the
+file's content (`site.css?v=…`), so after an update a simple refresh shows the new version instead of
+a copy the browser kept (GitHub Pages lets browsers keep files for 10 minutes).
+
 ## Before launch
 
 `assets/js/config.js` holds every business fact the site states: WhatsApp number, company name and
