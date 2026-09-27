@@ -30,10 +30,11 @@ export const BUSINESS = {
   // coin the client picks, with a copy button and a QR code. Only coins with an address appear.
   // Paste each address exactly as your wallet shows it, and double-check the network: a coin sent
   // on the wrong network is lost.
+  // TESTING: these are deliberate non-addresses (wallets reject them). Replace before real customers pay.
   cryptoWallets: [
-    { coin: 'USDT', network: 'TRC-20 (Tron)', address: null, rateId: 'tether',   decimals: 2 },
-    { coin: 'BTC',  network: 'Bitcoin',       address: null, rateId: 'bitcoin',  decimals: 6 },
-    { coin: 'ETH',  network: 'Ethereum (ERC-20)', address: null, rateId: 'ethereum', decimals: 5 },
+    { coin: 'USDT', network: 'TRC-20 (Tron)', address: 'TEST-USDT-ADDRESS-NOT-REAL',  rateId: 'tether',   decimals: 2 },
+    { coin: 'BTC',  network: 'Bitcoin',       address: 'TEST-BTC-ADDRESS-NOT-REAL',  rateId: 'bitcoin',  decimals: 6 },
+    { coin: 'ETH',  network: 'Ethereum (ERC-20)', address: 'TEST-ETH-ADDRESS-NOT-REAL',  rateId: 'ethereum', decimals: 5 },
   ],
 
   // Real Google reviews only, copied with the reviewer's name as shown on Google (audit 4.3).
