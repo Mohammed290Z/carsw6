@@ -1,5 +1,5 @@
 import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=4ea4faa59d';
-import { LANGS, STRINGS } from './i18n.js?v=cfa3cf9653';
+import { LANGS, STRINGS } from './i18n.js?v=c25ca6c7f6';
 import META from './cars-meta.js?v=30510c7a1a';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -61,6 +61,14 @@ $$('.langs button').forEach(b => b.addEventListener('click', () => {
   lang = b.dataset.lang; store.set('lang', lang);
   applyLang();
 }));
+
+/* ================= Menu (below 980px) =================
+   A modal <dialog>: focus trap, Esc and inert page come with it. Any link or the close button dismisses it. */
+const menu = $('#menu'), menuBtn = $('#menuBtn');
+menuBtn.addEventListener('click', () => { menu.showModal(); menuBtn.setAttribute('aria-expanded', 'true'); });
+menu.addEventListener('close', () => menuBtn.setAttribute('aria-expanded', 'false'));
+menu.addEventListener('click', e => { if (e.target.closest('a, [data-close]')) menu.close(); });
+matchMedia('(min-width: 980px)').addEventListener('change', e => { if (e.matches && menu.open) menu.close(); });
 
 /* ================= Images ================= */
 const WIDTHS = [800, 1200, 1600];

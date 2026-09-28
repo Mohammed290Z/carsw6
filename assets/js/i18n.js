@@ -14,7 +14,7 @@ export const STRINGS = {
   fr: {
     'meta.title': 'CARSW6 — Location de voitures premium à Casablanca',
     'meta.description': 'Location de voitures premium à Casablanca : Range Rover Sport, Mercedes-AMG CLA 45 S et Audi RS 3, livrées à l\'aéroport Mohammed V, à votre hôtel ou à votre villa.',
-    'nav.fleet': 'La flotte', 'nav.process': 'Déroulement', 'nav.payment': 'Paiement', 'nav.label': 'Principale',
+    'nav.fleet': 'La flotte', 'nav.process': 'Déroulement', 'nav.payment': 'Paiement', 'nav.label': 'Principale', 'nav.menu': 'Menu', 'nav.close': 'Fermer le menu',
     'lang.label': 'Langue',
     'cta.header': 'Réserver',
     'cta.car': p => `Réserver ${p.the}`,
@@ -91,7 +91,7 @@ export const STRINGS = {
   en: {
     'meta.title': 'CARSW6 — Premium car rental in Casablanca',
     'meta.description': 'Premium car rental in Casablanca: Range Rover Sport, Mercedes-AMG CLA 45 S and Audi RS 3, delivered to Mohammed V Airport, your hotel or your villa.',
-    'nav.fleet': 'The fleet', 'nav.process': 'How it works', 'nav.payment': 'Payment', 'nav.label': 'Main',
+    'nav.fleet': 'The fleet', 'nav.process': 'How it works', 'nav.payment': 'Payment', 'nav.label': 'Main', 'nav.menu': 'Menu', 'nav.close': 'Close menu',
     'lang.label': 'Language',
     'cta.header': 'Book',
     'cta.car': p => `Book ${p.the}`,
@@ -168,7 +168,7 @@ export const STRINGS = {
   ar: {
     'meta.title': 'CARSW6 — كراء سيارات فاخرة في الدار البيضاء',
     'meta.description': 'كراء سيارات فاخرة في الدار البيضاء: رينج روفر سبورت، مرسيدس-AMG CLA 45 S وأودي RS 3، مع التوصيل إلى مطار محمد الخامس أو فندقك أو فيلتك.',
-    'nav.fleet': 'الأسطول', 'nav.process': 'كيف يتم الحجز', 'nav.payment': 'الدفع', 'nav.label': 'القائمة الرئيسية',
+    'nav.fleet': 'الأسطول', 'nav.process': 'كيف يتم الحجز', 'nav.payment': 'الدفع', 'nav.label': 'القائمة الرئيسية', 'nav.menu': 'القائمة', 'nav.close': 'إغلاق القائمة',
     'lang.label': 'اللغة',
     'cta.header': 'احجز',
     'cta.car': p => `احجز ${p.the}`,
