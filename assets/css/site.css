@@ -219,6 +219,9 @@ html[lang="ar"] .hero h1{font-style:normal;letter-spacing:0;line-height:1.3;font
 .card-price b{font-family:var(--serif);font-weight:500;font-size:24px;color:var(--brass);font-variant-numeric:tabular-nums}
 .card-price span{display:block}
 .fleet-grid .btn.small{--h:44px;flex:none}
+.fleet-more{display:flex;justify-content:center;margin-top:clamp(28px,4vw,44px)}
+.btn.ghost{color:var(--sand);background:none;box-shadow:inset 0 0 0 1px rgba(239,232,220,.35);min-width:min(100%,280px)}
+.btn.ghost:hover{color:var(--ink)}
 
 /* ---------- Solid sections ---------- */
 .solid{position:relative;background:var(--ink);padding:clamp(88px,13vh,150px) var(--gutter)}

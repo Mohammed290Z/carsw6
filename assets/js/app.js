@@ -1,5 +1,5 @@
 import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=01dac72443';
-import { LANGS, STRINGS } from './i18n.js?v=c7bc6e12c2';
+import { LANGS, STRINGS } from './i18n.js?v=c8decc71b9';
 import META from './cars-meta.js?v=e1c1ce5597';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -85,8 +85,8 @@ function picture(c, view, sizes, extra = '') {
    by the shop's categories. */
 const FEATURED = CARS.map((c, i) => c.featured ? i : -1).filter(i => i >= 0);
 const FILTERS = ['all', 'lux', 'suv', 'city'];
-let filter = 'all';
-const roster = $('#roster'), grid = $('#fleetGrid'), filters = $('#fleetFilters');
+let filter = 'all', expanded = false;
+const roster = $('#roster'), grid = $('#fleetGrid'), filters = $('#fleetFilters'), more = $('#fleetMore');
 const specsHTML = c => `
   <div><dt>${t('spec.power')}</dt><dd>${fmt(c.power)}<small>${t('unit.hp')}</small></dd></div>
   <div><dt>${t('spec.accel')}</dt><dd>${fmt1(c.accel)}<small>${t('unit.s')}</small></dd></div>
@@ -114,15 +114,31 @@ function buildFleet() {
   applyFilter();
   stages.build();
 }
+// collapsed, the grid shows two rows (at least four cars); the button reveals the rest
+const columns = () => getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+const collapsedCount = () => Math.max(4, columns() * 2);
 function applyFilter() {
   $$('button', filters).forEach(b => b.setAttribute('aria-pressed', b.dataset.filter === filter));
-  [...grid.children].forEach(li => { li.hidden = filter !== 'all' && !CARS[+li.dataset.i].tags.includes(filter); });
+  const match = [...grid.children].filter(li => filter === 'all' || CARS[+li.dataset.i].tags.includes(filter));
+  const limit = expanded ? Infinity : collapsedCount();
+  [...grid.children].forEach(li => { li.hidden = !match.includes(li) || match.indexOf(li) >= limit; });
+  more.hidden = match.length <= collapsedCount();
+  more.textContent = expanded ? t('fleet.less') : t('fleet.more', { n: fmt(match.length) });
+  more.setAttribute('aria-expanded', expanded);
   stages.placeInline();
 }
 filters.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
-  filter = b.dataset.filter; applyFilter();
+  filter = b.dataset.filter; expanded = false; applyFilter();
 });
+more.addEventListener('click', () => {
+  expanded = !expanded; applyFilter();
+  // collapsing from far down the list: bring the filters back into view
+  if (!expanded && filters.getBoundingClientRect().top < 0) filters.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+});
+// the number of columns (so of cars in two rows) changes with the width
+let cols = 0;
+new ResizeObserver(() => { const c = columns(); if (c !== cols) { cols = c; if (!expanded) applyFilter(); } }).observe(grid);
 
 /* ================= Current car ================= */
 // ?car=N opens on a given car (handy for reviewing each car in the hero)
