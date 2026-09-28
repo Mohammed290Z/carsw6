@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>CARSW6 — Location de voitures premium à Casablanca</title>
-<meta name="description" content="Location de voitures premium à Casablanca : Range Rover Sport, Mercedes-AMG CLA 45 S et Audi RS 3, livrées à l'aéroport Mohammed V, à votre hôtel ou à votre villa.">
+<meta name="description" content="Location de voitures premium à Casablanca : 26 voitures, de la Renault Clio à la Lamborghini Urus, livrées à l'aéroport Mohammed V, à votre hôtel ou à votre villa.">
 <meta name="theme-color" content="#0B1026">
 <!-- Link previews (WhatsApp, iMessage, social). og:url and og:image must be absolute: update them if the domain changes. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CARSW6">
 <meta property="og:title" content="CARSW6 — Location de voitures premium à Casablanca">
-<meta property="og:description" content="Range Rover Sport, Mercedes-AMG CLA 45 S, Audi RS 3. Livrées à l'aéroport Mohammed V, à votre hôtel ou à votre villa.">
+<meta property="og:description" content="Lamborghini Urus, Bentley Bentayga, Mercedes-AMG G 63, Porsche, Range Rover : 26 voitures livrées à l'aéroport Mohammed V, à votre hôtel ou à votre villa.">
 <meta property="og:url" content="https://antennax78.github.io/carsw6/">
 <meta property="og:image" content="https://antennax78.github.io/carsw6/assets/brand/og-image.jpg">
 <meta property="og:image:width" content="1200">
@@ -25,9 +25,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/site.css?v=e16d4fbe5a">
+<link rel="stylesheet" href="assets/css/site.css?v=72d792ce92">
 <!-- hero car: fetched early so it paints with the headline -->
-<link rel="preload" as="image" type="image/avif" imagesrcset="assets/cars/range-rover-sport-34-800.avif 800w, assets/cars/range-rover-sport-34-1200.avif 1200w, assets/cars/range-rover-sport-34-1600.avif 1600w" imagesizes="(max-width: 759px) 92vw, 60vw">
+<link rel="preload" as="image" type="image/avif" imagesrcset="assets/cars/mercedes-g63-34-800.avif 800w, assets/cars/mercedes-g63-34-1200.avif 1200w, assets/cars/mercedes-g63-34-1600.avif 1600w" imagesizes="(max-width: 759px) 92vw, 60vw">
 </head>
 <body>
 
@@ -74,9 +74,9 @@
   <section class="hero" id="accueil">
     <div class="hero-car stage-slot" id="heroPhoneSlot">
       <picture>
-        <source type="image/avif" srcset="assets/cars/range-rover-sport-34-800.avif 800w, assets/cars/range-rover-sport-34-1200.avif 1200w" sizes="92vw">
-        <img src="assets/cars/range-rover-sport-34-800.webp" srcset="assets/cars/range-rover-sport-34-800.webp 800w, assets/cars/range-rover-sport-34-1200.webp 1200w" sizes="92vw"
-             width="800" height="497" alt="Range Rover Sport noir, vue de trois quarts avant" data-car-img="0" fetchpriority="high">
+        <source type="image/avif" srcset="assets/cars/mercedes-g63-34-800.avif 800w, assets/cars/mercedes-g63-34-1200.avif 1200w" sizes="92vw">
+        <img src="assets/cars/mercedes-g63-34-800.webp" srcset="assets/cars/mercedes-g63-34-800.webp 800w, assets/cars/mercedes-g63-34-1200.webp 1200w" sizes="92vw"
+             width="800" height="478" alt="Mercedes-AMG G 63 noire, vue de trois quarts avant" data-car-img="0" fetchpriority="high">
       </picture>
     </div>
     <div class="hero-copy">
@@ -91,37 +91,39 @@
     <div class="hero-slot" id="heroSlot" aria-hidden="true"></div>
     <div class="plate">
       <div class="plate-info">
-        <div class="make" data-bind="make">Range Rover</div>
-        <div class="model" data-bind="model">Sport</div>
-        <div class="price"><b data-bind="price">6 500</b> <span data-bind="perDayCur">MAD par jour</span></div>
+        <div class="make" data-bind="make">Mercedes-AMG</div>
+        <div class="model" data-bind="model">G 63</div>
+        <div class="price"><span data-i18n="from">Dès</span> <b data-bind="price">9 900</b> <span data-bind="perDayCur">MAD par jour</span></div>
       </div>
-      <a class="btn" href="#reserver" data-book data-bind="cta">Réserver la Range Rover Sport</a>
+      <a class="btn" href="#reserver" data-book data-bind="cta">Réserver la Mercedes-AMG G 63</a>
     </div>
     <div class="scrollcue" aria-hidden="true"></div>
   </section>
 
-  <section id="flotte" data-i18n-attr="aria-label:nav.fleet" aria-label="La flotte">
-    <!-- tablet/desktop: pinned showroom over the 3D floor -->
+  <!-- tablet/desktop: pinned showroom of the featured cars over the 3D floor -->
+  <section id="vitrine" data-i18n-attr="aria-label:fleet.featured" aria-label="À la une">
     <div class="showroom">
       <div class="roster">
-        <p class="eyebrow" data-i18n="fleet.eyebrow">La flotte</p>
+        <p class="eyebrow" data-i18n="fleet.featured">À la une</p>
         <ul id="roster"></ul>
       </div>
       <div class="showroom-slot" id="showroomSlot" aria-hidden="true"></div>
       <div class="spec">
-        <p class="count fade-swap" data-bind="count">1 sur 3</p>
+        <p class="count fade-swap" data-bind="count">1 sur 4</p>
         <p class="pitch fade-swap" data-bind="pitch"></p>
         <dl class="specs fade-swap" id="specs"></dl>
-        <a class="btn" href="#reserver" data-book data-bind="cta">Réserver la Range Rover Sport</a>
-        <a class="skip" href="#reserver" data-i18n="fleet.skip">Passer à la réservation</a>
+        <a class="btn" href="#reserver" data-book data-bind="cta">Réserver la Mercedes-AMG G 63</a>
+        <a class="skip" href="#flotte" data-i18n="fleet.skip">Voir toute la flotte</a>
       </div>
     </div>
-    <!-- phone: swipeable cards (audit 4.7) -->
-    <div class="fleet-lite">
-      <p class="eyebrow" data-i18n="fleet.eyebrow">La flotte</p>
-      <ul class="fleet-tabs" id="fleetTabs"></ul>
-      <ul class="fleet-cards" id="fleetCards"></ul>
-    </div>
+  </section>
+
+  <!-- every car, filterable by the shop's categories -->
+  <section class="solid" id="flotte">
+    <p class="eyebrow" data-i18n="fleet.eyebrow">La flotte</p>
+    <h2 class="sec-title" data-i18n="fleet.title">Toute la flotte.</h2>
+    <div class="filters" id="fleetFilters" role="group" data-i18n-attr="aria-label:fleet.filter" aria-label="Filtrer"></div>
+    <ul class="fleet-grid" id="fleetGrid"></ul>
   </section>
 
   <section class="solid" id="deroulement">
@@ -166,8 +168,8 @@
     <div class="book">
       <aside class="summary" aria-live="polite">
         <picture class="side-view" id="sideView"></picture>
-        <div class="make" data-bind="make">Range Rover</div>
-        <div class="model" data-bind="model">Sport</div>
+        <div class="make" data-bind="make">Mercedes-AMG</div>
+        <div class="model" data-bind="model">G 63</div>
         <table class="sum-table" data-summary></table>
         <p class="insurance" data-bind="insurance" hidden></p>
         <p class="note" data-i18n="sum.note">Tarifs indicatifs, confirmés par votre concierge avec la disponibilité.</p>
@@ -274,13 +276,13 @@
 
 <!-- phone only -->
 <div class="bookbar" id="bookbar">
-  <div class="price"><b data-bind="priceCur">6 500 MAD</b><span data-bind="perDay">par jour</span></div>
+  <div class="price"><b data-bind="priceCur">9 900 MAD</b><span data-bind="perDay">par jour</span></div>
   <a class="btn" href="#reserver" data-i18n="bar.book">Réserver</a>
 </div>
 <a class="wa-float wa-link" id="waFloat" target="_blank" rel="noopener" hidden data-i18n-attr="aria-label:wa.float" aria-label="Écrire sur WhatsApp">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>
 </a>
 
-<script type="module" src="assets/js/app.js?v=6ac128fc15"></script>
+<script type="module" src="assets/js/app.js?v=80a03511c7"></script>
 </body>
 </html>

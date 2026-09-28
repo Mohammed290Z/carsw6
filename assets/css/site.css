@@ -31,7 +31,7 @@ img{display:block;max-width:100%;height:auto}
 :focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:2px}
 html{scroll-behavior:smooth}
 section[id]{scroll-margin-top:100px}
-#flotte{scroll-margin-top:0}  /* pins to the top itself */
+#vitrine{scroll-margin-top:0}  /* pins to the top itself */
 .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 [hidden]{display:none!important}
 
@@ -164,7 +164,7 @@ html[lang="ar"] .hero h1{font-style:normal;letter-spacing:0;line-height:1.3;font
 @keyframes cue{to{top:100%}}
 
 /* ---------- Fleet: pinned showroom (≥760px) ---------- */
-#flotte{position:relative}
+#vitrine{position:relative}
 .showroom{position:sticky;top:0;height:100svh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);
   padding:calc(var(--header-h) + 26px) var(--gutter) 48px;gap:32px;overflow-x:clip}  /* clip, not hidden: it's the sticky box itself; keeps the spec glow inside the page */
 .showroom-slot{grid-column:2;grid-row:1;align-self:center;height:68%}
@@ -194,7 +194,31 @@ html[lang="ar"] .hero h1{font-style:normal;letter-spacing:0;line-height:1.3;font
 .skip:hover{color:var(--sand)}
 .fade-swap{transition:opacity .3s}
 .fade-swap.out{opacity:0}
-.fleet-lite{display:none}
+
+/* ---------- Fleet grid: every car, filterable ---------- */
+#flotte{padding-top:clamp(72px,10vh,120px)}
+#flotte .eyebrow{margin-bottom:14px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
+.filters button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:44px;cursor:pointer;
+  background:none;color:var(--mist);font:500 15px var(--sans);box-shadow:inset 0 0 0 1px var(--line);transition:background .2s,color .2s,box-shadow .2s}
+.filters button span{font-size:13px;font-variant-numeric:tabular-nums;color:var(--sand-dim)}
+.filters button:hover{color:var(--sand);box-shadow:inset 0 0 0 1px rgba(239,232,220,.35)}
+.filters button[aria-pressed="true"]{background:var(--sand);color:var(--ink);box-shadow:none}
+.filters button[aria-pressed="true"] span{color:rgba(11,16,38,.6)}
+/* auto-fill: 1 column on phones, 2 on tablets, 3–4 on desktop, no breakpoints needed */
+.fleet-grid{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:clamp(14px,2vw,24px);margin-top:36px}
+.fleet-grid > li{display:flex;flex-direction:column;min-width:0;padding:clamp(16px,2vw,22px);border-radius:24px;box-shadow:inset 0 0 0 1px var(--line);
+  background:linear-gradient(180deg, rgba(18,26,61,.55), rgba(11,16,38,.15));transition:box-shadow .25s}
+.fleet-grid > li:hover{box-shadow:inset 0 0 0 1px rgba(217,178,111,.45)}
+.fleet-grid .stage-slot{aspect-ratio:16/10;margin-bottom:8px}
+.fleet-grid .eyebrow{font-size:12px}
+.fleet-grid h3{margin:2px 0 6px;font-size:clamp(22px,1.2vw + 14px,26px);line-height:1.15}
+.card-specs{color:var(--mist);font-size:14px;font-variant-numeric:tabular-nums}
+.card-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:auto;padding-top:18px}
+.card-price{color:var(--mist);font-size:13px;line-height:1.25}
+.card-price b{font-family:var(--serif);font-weight:500;font-size:24px;color:var(--brass);font-variant-numeric:tabular-nums}
+.card-price span{display:block}
+.fleet-grid .btn.small{--h:44px;flex:none}
 
 /* ---------- Solid sections ---------- */
 .solid{position:relative;background:var(--ink);padding:clamp(88px,13vh,150px) var(--gutter)}
@@ -233,7 +257,7 @@ h3{font-family:var(--serif);font-weight:500;font-size:var(--h3);line-height:1.2}
 .book{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,6vw,96px);margin-top:56px;align-items:start}
 .summary{position:sticky;top:110px}
 .summary .side-view{margin:0 0 18px;aspect-ratio:1600/620;display:flex;align-items:flex-end}
-.summary .side-view img{width:100%}
+.summary .side-view img{width:100%;height:100%;object-fit:contain;object-position:bottom}
 .summary .model{font-family:var(--serif);font-size:clamp(34px,3.6vw,48px);line-height:1.05;margin:4px 0 22px}
 .summary .make{color:var(--mist)}
 .sum-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
@@ -362,28 +386,8 @@ footer.site a{text-underline-offset:3px}
   .plate{margin-top:24px}
   .plate .btn{width:100%}
 
-  #flotte{height:auto!important}
+  #vitrine{height:auto!important}
   .showroom{display:none}
-  .fleet-lite{display:block;padding:40px 0 24px}
-  .fleet-lite .eyebrow{padding:0 var(--gutter);margin-bottom:12px}
-  /* audit 2.3: scrollable tab strip with a fade on the trailing edge */
-  .fleet-tabs{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
-    padding:0 var(--gutter);scroll-padding-inline:var(--gutter);margin-bottom:16px;list-style:none;
-    -webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
-  [dir="rtl"] .fleet-tabs{-webkit-mask-image:linear-gradient(270deg,#000 85%,transparent);mask-image:linear-gradient(270deg,#000 85%,transparent)}
-  .fleet-tabs::-webkit-scrollbar{display:none}
-  .fleet-tabs li{flex:none;scroll-snap-align:start}
-  .fleet-tabs button{min-height:48px;background:none;border:0;color:var(--sand-dim);font:400 22px/1.1 var(--serif);white-space:nowrap;cursor:pointer;text-align:start}
-  .fleet-tabs button em{display:block;font:500 12px/1.3 var(--sans);font-style:normal}
-  .fleet-tabs button[aria-current="true"]{color:var(--sand)}
-  .fleet-cards{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 var(--gutter);scroll-padding-inline:var(--gutter);list-style:none}
-  .fleet-cards::-webkit-scrollbar{display:none}
-  .fleet-cards > li{flex:0 0 88%;scroll-snap-align:center;padding:18px;border-radius:24px;box-shadow:inset 0 0 0 1px var(--line);
-    background:linear-gradient(180deg, rgba(18,26,61,.6), rgba(11,16,38,.2))}
-  .fleet-cards .stage-slot{aspect-ratio:16/10}
-  .fleet-cards h3{margin-top:14px}
-  .fleet-cards .pitch{color:var(--mist);margin:8px 0 14px;font-size:15px}
-  .fleet-cards .btn{width:100%;margin-top:16px}
 
   .sec-title{max-width:none}
   .pay{grid-template-columns:1fr}

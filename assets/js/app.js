@@ -1,6 +1,6 @@
-import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=4ea4faa59d';
-import { LANGS, STRINGS } from './i18n.js?v=c25ca6c7f6';
-import META from './cars-meta.js?v=30510c7a1a';
+import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=01dac72443';
+import { LANGS, STRINGS } from './i18n.js?v=c7bc6e12c2';
+import META from './cars-meta.js?v=e1c1ce5597';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -80,8 +80,13 @@ function picture(c, view, sizes, extra = '') {
     `<img src="assets/cars/${key}-800.webp" srcset="${srcset(key, 'webp')}" sizes="${sizes}" alt="${altFor(c, view)}" decoding="async" ${extra}></picture>`;
 }
 
-/* ================= Fleet markup ================= */
-const roster = $('#roster'), tabs = $('#fleetTabs'), cards = $('#fleetCards');
+/* ================= Fleet markup =================
+   The pinned showroom walks through the featured cars; the grid below lists every car, filterable
+   by the shop's categories. */
+const FEATURED = CARS.map((c, i) => c.featured ? i : -1).filter(i => i >= 0);
+const FILTERS = ['all', 'lux', 'suv', 'city'];
+let filter = 'all';
+const roster = $('#roster'), grid = $('#fleetGrid'), filters = $('#fleetFilters');
 const specsHTML = c => `
   <div><dt>${t('spec.power')}</dt><dd>${fmt(c.power)}<small>${t('unit.hp')}</small></dd></div>
   <div><dt>${t('spec.accel')}</dt><dd>${fmt1(c.accel)}<small>${t('unit.s')}</small></dd></div>
@@ -89,30 +94,45 @@ const specsHTML = c => `
   <div><dt>${t('spec.price')}</dt><dd>${fmt(c.price)}<small>${t('currency')}</small></dd></div>`;
 
 function buildFleet() {
-  roster.innerHTML = CARS.map((c, i) =>
-    `<li><button type="button" data-i="${i}"><em>${c.make}</em>${c.model}</button></li>`).join('');
-  tabs.innerHTML = CARS.map((c, i) =>
-    `<li><button type="button" data-i="${i}"><em>${c.make}</em>${c.model}</button></li>`).join('');
-  cards.innerHTML = CARS.map((c, i) => `
+  roster.innerHTML = FEATURED.map(i =>
+    `<li><button type="button" data-i="${i}"><em>${CARS[i].make}</em>${CARS[i].model}</button></li>`).join('');
+  filters.innerHTML = FILTERS.map(f => {
+    const n = f === 'all' ? CARS.length : CARS.filter(c => c.tags.includes(f)).length;
+    return `<button type="button" data-filter="${f}" aria-pressed="${f === filter}">${t(`filter.${f}`)} <span>${fmt(n)}</span></button>`;
+  }).join('');
+  grid.innerHTML = CARS.map((c, i) => `
     <li data-i="${i}">
       <div class="stage-slot" data-car="${i}"></div>
-      <h3><span class="eyebrow">${c.make}</span><br>${c.model}</h3>
-      <p class="pitch">${c.pitch[lang]}</p>
-      <dl class="specs">${specsHTML(c)}</dl>
-      <a class="btn" href="#reserver" data-book="${i}">${t('cta.car', { the: c.the[lang] })}</a>
+      <p class="eyebrow">${c.make}</p>
+      <h3>${c.model}</h3>
+      <p class="card-specs">${fmt(c.power)} ${t('unit.hp')} · ${fmt1(c.accel)} ${t('unit.s')} · ${fmt(c.seats)} ${t('spec.seats').toLowerCase()}</p>
+      <div class="card-foot">
+        <p class="card-price">${t('from')} <b>${fmt(c.price)}</b> ${t('currency')}<span>${t('perDay')}</span></p>
+        <a class="btn small" href="#reserver" data-book="${i}" aria-label="${t('cta.car', { the: c.the[lang] })}">${t('card.book')}</a>
+      </div>
     </li>`).join('');
+  applyFilter();
   stages.build();
 }
+function applyFilter() {
+  $$('button', filters).forEach(b => b.setAttribute('aria-pressed', b.dataset.filter === filter));
+  [...grid.children].forEach(li => { li.hidden = filter !== 'all' && !CARS[+li.dataset.i].tags.includes(filter); });
+  stages.placeInline();
+}
+filters.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  filter = b.dataset.filter; applyFilter();
+});
 
 /* ================= Current car ================= */
 // ?car=N opens on a given car (handy for reviewing each car in the hero)
-let current = clamp(parseInt(params.get('car'), 10) || 0, 0, CARS.length - 1);
+let current = clamp(parseInt(params.get('car'), 10) || FEATURED[0] || 0, 0, CARS.length - 1);
 function bind(i, animate = true) {
   const c = CARS[i];
   const vals = {
     make: c.make, model: c.model, price: fmt(c.price), priceCur: money(c.price), perDay: t('perDay'),
     perDayCur: `${t('currency')} ${t('perDay')}`, pitch: c.pitch[lang], cta: t('cta.car', { the: c.the[lang] }),
-    count: t('fleet.count', { i: fmt(i + 1), n: fmt(CARS.length) }),
+    count: FEATURED.includes(i) ? t('fleet.count', { i: fmt(FEATURED.indexOf(i) + 1), n: fmt(FEATURED.length) }) : '',
   };
   const apply = () => {
     $$('[data-bind]').forEach(el => { const k = el.dataset.bind; if (k in vals) el.textContent = vals[k]; });
@@ -123,14 +143,9 @@ function bind(i, animate = true) {
     swaps.forEach(s => s.classList.add('out'));
     setTimeout(() => { apply(); swaps.forEach(s => s.classList.remove('out')); }, 250);
   } else apply();
-  [roster, tabs].forEach(list => $$('button', list).forEach(b => b.setAttribute('aria-current', +b.dataset.i === i)));
-  // bring the active tab into the strip — sideways only, so the page itself never jumps
-  const tab = tabs.children[i];
-  if (tab && tabs.scrollWidth > tabs.clientWidth) {
-    const r = tab.getBoundingClientRect(), s = tabs.getBoundingClientRect();
-    tabs.scrollBy({ left: (r.left + r.width / 2) - (s.left + s.width / 2), behavior: animate && !reduce ? 'smooth' : 'auto' });
-  }
-  $('#sideView').innerHTML = picture(c, 'side', '(max-width: 979px) 90vw, 40vw', 'loading="lazy"');
+  $$('button', roster).forEach(b => b.setAttribute('aria-current', +b.dataset.i === i));
+  // most cars only have the three-quarter photo; the side view is used where there is one
+  $('#sideView').innerHTML = picture(c, c.img.side ? 'side' : 'q', '(max-width: 979px) 90vw, 40vw', 'loading="lazy"');
   $('#fCar').value = i;
   stages.show(i);
   updateTotal();
@@ -148,7 +163,7 @@ function selectCar(i, animate = true) {
    A slot says where the floor is; the stage puts the centre of the car's footprint there. */
 const pct = v => `${(v * 100).toFixed(3)}%`;
 const REF_LEN = Math.max(...CARS.map(c => c.len));   // cars keep their real size relative to each other
-function stageHTML(c, i, sizes) {
+function stageHTML(c, i, sizes, priority = false) {
   const m = META[c.img.q], s = m.stage;
   const vars = [`--ar:${m.w}/${m.h}`, `--cx:${pct(s.cx)}`, `--cy:${pct(s.cy)}`, `--rx:${pct(s.rx)}`, `--ry:${pct(s.ry)}`,
     `--cw:${pct(s.cw)}`, `--ch:${pct(s.ch)}`, `--gy:${pct(s.glowY)}`, `--gh:${pct(s.glowH)}`].join(';');
@@ -156,7 +171,7 @@ function stageHTML(c, i, sizes) {
   return `<div class="car-stage" data-i="${i}" style="${vars}">
     <div class="cs-ground"></div><div class="cs-glow"></div><div class="cs-ring"></div>
     <div class="cs-shadow"></div>${contacts}
-    ${picture(c, 'q', sizes, i === 0 ? 'fetchpriority="high"' : 'loading="lazy"')}
+    ${picture(c, 'q', sizes, priority ? 'fetchpriority="high"' : 'loading="lazy"')}
   </div>`;
 }
 // A slot's floor point and how wide its largest car may be
@@ -180,17 +195,23 @@ function place(stage, f) {
 const layer = $('#stageLayer'), heroSlot = $('#heroSlot'), showSlot = $('#showroomSlot');
 const stages = {
   build() {
-    // tablet/desktop: one fixed layer that carries the car from the hero into the showroom
-    layer.innerHTML = CARS.map((c, i) => stageHTML(c, i, '60vw')).join('');
-    // phone: a stage inside the hero and inside each fleet card
-    $('#heroPhoneSlot').innerHTML = stageHTML(CARS[0], 0, '92vw');
-    $$('.fleet-cards .stage-slot').forEach(slot => { slot.innerHTML = stageHTML(CARS[+slot.dataset.car], +slot.dataset.car, '80vw'); });
+    // tablet/desktop: one fixed layer that carries the featured cars from the hero into the showroom
+    layer.innerHTML = FEATURED.map(i => stageHTML(CARS[i], i, '60vw', i === FEATURED[0])).join('');
+    // phone: a stage inside the hero; every width: one inside each grid card
+    $('#heroPhoneSlot').innerHTML = stageHTML(CARS[FEATURED[0]], FEATURED[0], '92vw', true);
+    $$('.fleet-grid .stage-slot').forEach(slot => {
+      const i = +slot.dataset.car; slot.innerHTML = stageHTML(CARS[i], i, '(max-width: 759px) 88vw, 420px');
+    });
     this.show(current);
     this.placeInline();
   },
-  show(i) { $$('.car-stage', layer).forEach(st => st.classList.toggle('on', +st.dataset.i === i)); },
+  // the layer only holds featured cars: picking another car in the grid keeps the last featured one on stage
+  show(i) {
+    const all = $$('.car-stage', layer);
+    if (all.some(st => +st.dataset.i === i)) all.forEach(st => st.classList.toggle('on', +st.dataset.i === i));
+  },
   placeInline() {
-    $$('.stage-slot').forEach(slot => $$('.car-stage', slot).forEach(st => place(st, slotFrame(slot, true))));
+    $$('.stage-slot').forEach(slot => { if (slot.offsetParent) $$('.car-stage', slot).forEach(st => place(st, slotFrame(slot, true))); });
   },
 };
 new ResizeObserver(() => stages.placeInline()).observe(document.body);
@@ -204,11 +225,11 @@ addEventListener('pointermove', e => { pointer.tx = e.clientX / innerWidth * 2 -
    tablet/desktop: pinned showroom, the car travels on a fixed layer from hero to showroom. */
 const phoneMQ = matchMedia('(max-width: 759px)');
 const immersive = () => !phoneMQ.matches;
-const flotte = $('#flotte'), header = $('#top'), vignette = $('.vignette');
+const vitrine = $('#vitrine'), header = $('#top'), vignette = $('.vignette');
 const state = { showroom: 0, stageVis: 1 };
 
 function layout() {
-  flotte.style.height = immersive() ? `${CARS.length * 100}svh` : '';
+  vitrine.style.height = immersive() ? `${FEATURED.length * 100}svh` : '';
   stages.placeInline();
   onScroll();
 }
@@ -218,10 +239,10 @@ phoneMQ.addEventListener('change', layout);
 function onScroll() {
   header.classList.toggle('scrolled', scrollY > 40);
   if (!immersive()) return;
-  const vh = innerHeight, top = flotte.offsetTop, span = flotte.offsetHeight - vh;
+  const vh = innerHeight, top = vitrine.offsetTop, span = vitrine.offsetHeight - vh;
   const p = (scrollY - top) / span;
   state.showroom = clamp(scrollY / Math.max(1, top), 0, 1);
-  if (p >= 0 && p <= 1) selectCar(Math.min(CARS.length - 1, Math.floor(p * CARS.length * .9999)));
+  if (p >= 0 && p <= 1) selectCar(FEATURED[Math.min(FEATURED.length - 1, Math.floor(p * FEATURED.length * .9999))]);
   // the stage fades out once the showroom has passed
   state.stageVis = clamp(1 - (scrollY - (top + span)) / (vh * .6), 0, 1);
   layer.style.opacity = vignette.style.opacity = state.stageVis;
@@ -230,31 +251,11 @@ addEventListener('scroll', onScroll, { passive: true });
 
 roster.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
-  const i = +b.dataset.i, span = flotte.offsetHeight - innerHeight;
+  const i = +b.dataset.i, k = FEATURED.indexOf(i), span = vitrine.offsetHeight - innerHeight;
   selectCar(i);
-  scrollTo({ top: flotte.offsetTop + span * (i + .5) / CARS.length, behavior: reduce ? 'auto' : 'smooth' });
+  scrollTo({ top: vitrine.offsetTop + span * (k + .5) / FEATURED.length, behavior: reduce ? 'auto' : 'smooth' });
 });
 
-// phone carousel: swiping picks the car; tabs scroll the carousel
-let cardTick = 0;
-cards.addEventListener('scroll', () => {
-  cancelAnimationFrame(cardTick);
-  cardTick = requestAnimationFrame(() => {
-    const mid = cards.getBoundingClientRect().left + cards.clientWidth / 2;
-    let best = 0, bestD = Infinity;
-    [...cards.children].forEach((li, i) => {
-      const r = li.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - mid);
-      if (d < bestD) { bestD = d; best = i; }
-    });
-    selectCar(best);
-  });
-}, { passive: true });
-tabs.addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  const i = +b.dataset.i;
-  selectCar(i);
-  cards.children[i].scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduce ? 'auto' : 'smooth' });
-});
 // a car's own button books that car
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-book]');

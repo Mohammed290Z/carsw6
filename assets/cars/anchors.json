@@ -28,18 +28,298 @@
       640
     ]
   },
-  "audi-rs3-34": {
+  "mercedes-cla-34": {
     "nearRear": [
-      182,
-      615
+      537,
+      426
     ],
     "nearFront": [
-      541,
-      672
+      325,
+      441
     ],
     "farFront": [
-      912,
-      645
+      53,
+      420
+    ]
+  },
+  "mercedes-c-34": {
+    "nearRear": [
+      526,
+      411
+    ],
+    "nearFront": [
+      319,
+      426
+    ],
+    "farFront": [
+      54,
+      406
+    ]
+  },
+  "porsche-panamera-34": {
+    "nearRear": [
+      487,
+      406
+    ],
+    "nearFront": [
+      289,
+      444
+    ],
+    "farFront": [
+      62,
+      434
+    ]
+  },
+  "range-rover-vogue-34": {
+    "nearRear": [
+      937,
+      820
+    ],
+    "nearFront": [
+      615,
+      851
+    ],
+    "farFront": [
+      117,
+      848
+    ]
+  },
+  "mercedes-g63-34": {
+    "nearRear": [
+      958,
+      742
+    ],
+    "nearFront": [
+      560,
+      839
+    ],
+    "farFront": [
+      250,
+      803
+    ]
+  },
+  "porsche-macan-gts-34": {
+    "nearRear": [
+      514,
+      383
+    ],
+    "nearFront": [
+      291,
+      403
+    ],
+    "farFront": [
+      103,
+      400
+    ]
+  },
+  "vw-touareg-34": {
+    "nearRear": [
+      522,
+      435
+    ],
+    "nearFront": [
+      312,
+      443
+    ],
+    "farFront": [
+      96,
+      435
+    ]
+  },
+  "mercedes-a-34": {
+    "nearRear": [
+      984,
+      720
+    ],
+    "nearFront": [
+      610,
+      771
+    ],
+    "farFront": [
+      150,
+      765
+    ]
+  },
+  "range-rover-evoque-34": {
+    "nearRear": [
+      59,
+      426
+    ],
+    "nearFront": [
+      278,
+      441
+    ],
+    "farFront": [
+      512,
+      432
+    ]
+  },
+  "bentley-bentayga-34": {
+    "nearRear": [
+      914,
+      713
+    ],
+    "nearFront": [
+      609,
+      752
+    ],
+    "farFront": [
+      217,
+      749
+    ]
+  },
+  "porsche-macan-34": {
+    "nearRear": [
+      529,
+      364
+    ],
+    "nearFront": [
+      338,
+      418
+    ],
+    "farFront": [
+      75,
+      396
+    ]
+  },
+  "audi-q8-34": {
+    "nearRear": [
+      517,
+      413
+    ],
+    "nearFront": [
+      280,
+      455
+    ],
+    "farFront": [
+      77,
+      437
+    ]
+  },
+  "lamborghini-urus-34": {
+    "nearRear": [
+      989,
+      637
+    ],
+    "nearFront": [
+      680,
+      783
+    ],
+    "farFront": [
+      200,
+      757
+    ]
+  },
+  "amg-cla35-34": {
+    "nearRear": [
+      825,
+      515
+    ],
+    "nearFront": [
+      516,
+      587
+    ],
+    "farFront": [
+      131,
+      545
+    ]
+  },
+  "vw-t-roc-34": {
+    "nearRear": [
+      545,
+      445
+    ],
+    "nearFront": [
+      332,
+      458
+    ],
+    "farFront": [
+      92,
+      450
+    ]
+  },
+  "hyundai-tucson-34": {
+    "nearRear": [
+      70,
+      424
+    ],
+    "nearFront": [
+      253,
+      440
+    ],
+    "farFront": [
+      507,
+      431
+    ]
+  },
+  "audi-q3-34": {
+    "nearRear": [
+      532,
+      452
+    ],
+    "nearFront": [
+      335,
+      467
+    ],
+    "farFront": [
+      92,
+      458
+    ]
+  },
+  "vw-golf-8-34": {
+    "nearRear": [
+      937,
+      731
+    ],
+    "nearFront": [
+      440,
+      765
+    ],
+    "farFront": [
+      259,
+      749
+    ]
+  },
+  "hyundai-accent-34": {
+    "nearRear": [
+      535,
+      414
+    ],
+    "nearFront": [
+      294,
+      447
+    ],
+    "farFront": [
+      123,
+      438
+    ]
+  },
+  "audi-a3-34": {
+    "nearRear": [
+      527,
+      442
+    ],
+    "nearFront": [
+      292,
+      476
+    ],
+    "farFront": [
+      134,
+      471
+    ]
+  },
+  "renault-clio-5-34": {
+    "nearRear": [
+      534,
+      410
+    ],
+    "nearFront": [
+      327,
+      425
+    ],
+    "farFront": [
+      90,
+      417
     ]
   }
 }

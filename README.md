@@ -1,6 +1,7 @@
 # CARSW6
 
-Site of CARSW6, premium car rental in Casablanca: Range Rover Sport, Mercedes-AMG CLA 45 S and Audi RS 3,
+Site of CARSW6, car rental in Casablanca: 26 cars from the Renault Clio to the Lamborghini Urus (the fleet in
+`assets/js/config.js` mirrors rentle.store/carsw6/shop),
 delivered to Mohammed V Airport, hotels and villas. French, English and Arabic.
 
 A static site — no build step. GitHub Pages serves it straight from this repository.

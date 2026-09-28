@@ -1,7 +1,7 @@
 // CARSW6 reservations panel. Talks to Supabase with the signed-in person's own session: what they
 // can see and change is decided by the database's security rules, not by this page.
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm';
-import { BUSINESS, CARS, SUPABASE } from '../assets/js/config.js?v=4ea4faa59d';
+import { BUSINESS, CARS, SUPABASE } from '../assets/js/config.js?v=01dac72443';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
