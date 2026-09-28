@@ -39,7 +39,7 @@ at `null` stays hidden. On localhost a banner lists what's still missing.
 ## Reservations back end (Supabase)
 
 Requests from the booking form are stored in Supabase and managed in the panel at
-`/admin/` (https://mohammed290z.github.io/carsw6/admin/).
+`/admin/` (https://antennax78.github.io/carsw6/admin/).
 
 - `supabase/migrations/` — the database: reservations, team, history, and the security rules.
   Visitors can only submit a request (through `submit_reservation`, with spam limits); staff read and

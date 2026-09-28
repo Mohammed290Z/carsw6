@@ -3,7 +3,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const allowed = (Deno.env.get("ALLOWED_ORIGINS") ??
-  "https://mohammed290z.github.io,http://localhost:4175,http://localhost:4174").split(",").map((s) => s.trim());
+  "https://antennax78.github.io,http://localhost:4175,http://localhost:4174").split(",").map((s) => s.trim());
 
 export function cors(req: Request): Record<string, string> {
   const origin = req.headers.get("origin") ?? "";
@@ -25,4 +25,4 @@ export function serviceClient() {
   });
 }
 
-export const PANEL_URL = Deno.env.get("PANEL_URL") ?? "https://mohammed290z.github.io/carsw6/admin/";
+export const PANEL_URL = Deno.env.get("PANEL_URL") ?? "https://antennax78.github.io/carsw6/admin/";
