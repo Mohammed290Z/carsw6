@@ -1,0 +1,1216 @@
+{
+ "version": 1,
+ "currency": "MAD",
+ "cars": [
+  {
+   "id": "mercedes-amg-g-63",
+   "name": "Mercedes-AMG G 63",
+   "make": "Mercedes-AMG",
+   "model": "G 63",
+   "price": 9900,
+   "deposit": 50000,
+   "power": 585,
+   "accel": 4.4,
+   "seats": 5,
+   "len": 4.87,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": true,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/mercedes-g63-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/mercedes-g63-34-1200.webp"
+     }
+    ],
+    "aspect": 1.6563
+   },
+   "the": {
+    "fr": "la Mercedes-AMG G 63",
+    "en": "the Mercedes-AMG G 63",
+    "ar": "مرسيدس-AMG G 63"
+   },
+   "alt": {
+    "fr": "Mercedes-AMG G 63 noire",
+    "en": "Black Mercedes-AMG G 63",
+    "ar": "مرسيدس-AMG G 63 سوداء"
+   },
+   "pitch": {
+    "fr": "Le Classe G, V8 biturbo de 585 ch. La voiture qu'on remarque devant n'importe quel hôtel.",
+    "en": "The G-Class with a 585 hp twin-turbo V8. The car everyone notices outside any hotel.",
+    "ar": "الفئة G بمحرك V8 مزدوج التوربو بقوة 585 حصاناً. السيارة التي تلفت الأنظار أمام أي فندق."
+   }
+  },
+  {
+   "id": "lamborghini-urus",
+   "name": "Lamborghini Urus",
+   "make": "Lamborghini",
+   "model": "Urus",
+   "price": 30000,
+   "deposit": 50000,
+   "power": 666,
+   "accel": 3.5,
+   "seats": 5,
+   "len": 5.12,
+   "tags": [
+    "lux"
+   ],
+   "featured": true,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/lamborghini-urus-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/lamborghini-urus-34-1200.webp"
+     }
+    ],
+    "aspect": 1.7505
+   },
+   "the": {
+    "fr": "la Lamborghini Urus",
+    "en": "the Lamborghini Urus",
+    "ar": "لامبورغيني أوروس"
+   },
+   "alt": {
+    "fr": "Lamborghini Urus noire",
+    "en": "Black Lamborghini Urus",
+    "ar": "لامبورغيني أوروس سوداء"
+   },
+   "pitch": {
+    "fr": "666 ch et 3,5 s de 0 à 100. Une supercar qui emmène cinq personnes et leurs bagages.",
+    "en": "666 hp and 0–100 in 3.5 s. A supercar that takes five people and their luggage.",
+    "ar": "666 حصاناً ومن 0 إلى 100 في 3.5 ثوانٍ. سيارة خارقة تتسع لخمسة أشخاص وأمتعتهم."
+   }
+  },
+  {
+   "id": "bentley-bentayga",
+   "name": "Bentley Bentayga",
+   "make": "Bentley",
+   "model": "Bentayga",
+   "price": 30000,
+   "deposit": 50000,
+   "power": 550,
+   "accel": 4.5,
+   "seats": 5,
+   "len": 5.13,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": true,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/bentley-bentayga-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/bentley-bentayga-34-1200.webp"
+     }
+    ],
+    "aspect": 1.8433
+   },
+   "the": {
+    "fr": "la Bentley Bentayga",
+    "en": "the Bentley Bentayga",
+    "ar": "بنتلي بينتايغا"
+   },
+   "alt": {
+    "fr": "Bentley Bentayga noire",
+    "en": "Black Bentley Bentayga",
+    "ar": "بنتلي بينتايغا سوداء"
+   },
+   "pitch": {
+    "fr": "Cuir cousu main et V8 de 550 ch. Le salon anglais, du Mohammed V jusqu'à la villa.",
+    "en": "Hand-stitched leather and a 550 hp V8. An English drawing room from the airport to the villa.",
+    "ar": "جلد مخيط يدوياً ومحرك V8 بقوة 550 حصاناً. صالون إنجليزي من المطار إلى الفيلا."
+   }
+  },
+  {
+   "id": "range-rover-vogue",
+   "name": "Range Rover Vogue",
+   "make": "Range Rover",
+   "model": "Vogue",
+   "price": 5990,
+   "deposit": 30000,
+   "power": 400,
+   "accel": 5.9,
+   "seats": 5,
+   "len": 5.05,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": true,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/range-rover-vogue-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/range-rover-vogue-34-1200.webp"
+     }
+    ],
+    "aspect": 1.7778
+   },
+   "the": {
+    "fr": "la Range Rover Vogue",
+    "en": "the Range Rover Vogue",
+    "ar": "رينج روفر فوغ"
+   },
+   "alt": {
+    "fr": "Range Rover Vogue noire",
+    "en": "Black Range Rover Vogue",
+    "ar": "رينج روفر فوغ سوداء"
+   },
+   "pitch": {
+    "fr": "Le grand Range Rover. Silence à 130 km/h, sièges massants, place pour toute la famille.",
+    "en": "The full-size Range Rover. Silent at 130 km/h, massage seats, room for the whole family.",
+    "ar": "رينج روفر الكبيرة. هدوء تام على سرعة 130 كم/س، مقاعد بالتدليك ومكان لكل العائلة."
+   }
+  },
+  {
+   "id": "porsche-panamera-4",
+   "name": "Porsche Panamera 4",
+   "make": "Porsche",
+   "model": "Panamera 4",
+   "price": 7490,
+   "deposit": 30000,
+   "power": 353,
+   "accel": 5.1,
+   "seats": 4,
+   "len": 5.05,
+   "tags": [
+    "lux"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/porsche-panamera-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/porsche-panamera-34-1200.webp"
+     }
+    ],
+    "aspect": 2.1477
+   },
+   "the": {
+    "fr": "la Porsche Panamera 4",
+    "en": "the Porsche Panamera 4",
+    "ar": "بورشه باناميرا 4"
+   },
+   "alt": {
+    "fr": "Porsche Panamera 4 noire",
+    "en": "Black Porsche Panamera 4",
+    "ar": "بورشه باناميرا 4 سوداء"
+   },
+   "pitch": {
+    "fr": "Une sportive à quatre portes. Quatre vraies places et la tenue de route d'une 911.",
+    "en": "A four-door sports car. Four proper seats and the road manners of a 911.",
+    "ar": "سيارة رياضية بأربعة أبواب. أربعة مقاعد حقيقية وثبات على الطريق يذكّر بالـ911."
+   }
+  },
+  {
+   "id": "porsche-macan-gts",
+   "name": "Porsche Macan GTS",
+   "make": "Porsche",
+   "model": "Macan GTS",
+   "price": 5490,
+   "deposit": 30000,
+   "power": 440,
+   "accel": 4.5,
+   "seats": 5,
+   "len": 4.73,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/porsche-macan-gts-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/porsche-macan-gts-34-1200.webp"
+     }
+    ],
+    "aspect": 2.0942
+   },
+   "the": {
+    "fr": "la Porsche Macan GTS",
+    "en": "the Porsche Macan GTS",
+    "ar": "بورشه ماكان GTS"
+   },
+   "alt": {
+    "fr": "Porsche Macan GTS noire",
+    "en": "Black Porsche Macan GTS",
+    "ar": "بورشه ماكان GTS سوداء"
+   },
+   "pitch": {
+    "fr": "Le Macan le plus vif : 440 ch, châssis abaissé, freins rouges. Un SUV qui se conduit comme une sportive.",
+    "en": "The sharpest Macan: 440 hp, lowered chassis, red calipers. An SUV that drives like a sports car.",
+    "ar": "أقوى ماكان: 440 حصاناً وهيكل منخفض ومكابح حمراء. سيارة SUV تُقاد كسيارة رياضية."
+   }
+  },
+  {
+   "id": "range-rover-sport",
+   "name": "Range Rover Sport",
+   "make": "Range Rover",
+   "model": "Sport",
+   "price": 3990,
+   "deposit": 30000,
+   "power": 400,
+   "accel": 5.9,
+   "seats": 5,
+   "len": 4.95,
+   "tags": [
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/range-rover-sport-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/range-rover-sport-34-1200.webp"
+     }
+    ],
+    "aspect": 1.6129
+   },
+   "the": {
+    "fr": "la Range Rover Sport",
+    "en": "the Range Rover Sport",
+    "ar": "رينج روفر سبورت"
+   },
+   "alt": {
+    "fr": "Range Rover Sport noire",
+    "en": "Black Range Rover Sport",
+    "ar": "رينج روفر سبورت سوداء"
+   },
+   "pitch": {
+    "fr": "Le confort d'un salon, la garde au sol pour l'Atlas. Cinq places, bagages compris.",
+    "en": "Lounge-grade comfort, the ground clearance for the Atlas. Five seats, luggage included.",
+    "ar": "راحة صالون وارتفاع كافٍ عن الأرض لطرق الأطلس. خمسة مقاعد مع الأمتعة."
+   }
+  },
+  {
+   "id": "mercedes-amg-cla-45-s",
+   "name": "Mercedes-AMG CLA 45 S",
+   "make": "Mercedes-AMG",
+   "model": "CLA 45 S",
+   "price": 3490,
+   "deposit": 25000,
+   "power": 421,
+   "accel": 4,
+   "seats": 5,
+   "len": 4.69,
+   "tags": [
+    "lux"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/amg-cla45-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/amg-cla45-34-1200.webp"
+     }
+    ],
+    "aspect": 2.046
+   },
+   "the": {
+    "fr": "la Mercedes-AMG CLA 45 S",
+    "en": "the Mercedes-AMG CLA 45 S",
+    "ar": "مرسيدس-AMG CLA 45 S"
+   },
+   "alt": {
+    "fr": "Mercedes-AMG CLA 45 S noire",
+    "en": "Black Mercedes-AMG CLA 45 S",
+    "ar": "مرسيدس-AMG CLA 45 S سوداء"
+   },
+   "pitch": {
+    "fr": "421 ch sous un capot de berline. Discrète en ville, vive sur l'autoroute de Rabat.",
+    "en": "421 hp under a saloon's bonnet. Discreet in town, quick on the Rabat motorway.",
+    "ar": "421 حصاناً تحت غطاء سيارة سيدان. هادئة في المدينة وسريعة على الطريق السيار نحو الرباط."
+   }
+  },
+  {
+   "id": "porsche-macan-s",
+   "name": "Porsche Macan S",
+   "make": "Porsche",
+   "model": "Macan S",
+   "price": 3490,
+   "deposit": 20000,
+   "power": 380,
+   "accel": 4.8,
+   "seats": 5,
+   "len": 4.73,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/porsche-macan-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/porsche-macan-34-1200.webp"
+     }
+    ],
+    "aspect": 1.8244
+   },
+   "the": {
+    "fr": "la Porsche Macan S",
+    "en": "the Porsche Macan S",
+    "ar": "بورشه ماكان S"
+   },
+   "alt": {
+    "fr": "Porsche Macan S noire",
+    "en": "Black Porsche Macan S",
+    "ar": "بورشه ماكان S سوداء"
+   },
+   "pitch": {
+    "fr": "V6 biturbo de 380 ch. Assez de souffle pour doubler sereinement sur la route de Marrakech.",
+    "en": "A 380 hp twin-turbo V6. Plenty in reserve for overtaking on the Marrakech road.",
+    "ar": "محرك V6 مزدوج التوربو بقوة 380 حصاناً. قوة كافية للتجاوز بثقة على طريق مراكش."
+   }
+  },
+  {
+   "id": "mercedes-amg-cla-35",
+   "name": "Mercedes-AMG CLA 35",
+   "make": "Mercedes-AMG",
+   "model": "CLA 35",
+   "price": 2990,
+   "deposit": 20000,
+   "power": 306,
+   "accel": 4.9,
+   "seats": 5,
+   "len": 4.69,
+   "tags": [
+    "lux"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/amg-cla35-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/amg-cla35-34-1200.webp"
+     }
+    ],
+    "aspect": 2.1025
+   },
+   "the": {
+    "fr": "la Mercedes-AMG CLA 35",
+    "en": "the Mercedes-AMG CLA 35",
+    "ar": "مرسيدس-AMG CLA 35"
+   },
+   "alt": {
+    "fr": "Mercedes-AMG CLA 35 grise",
+    "en": "Grey Mercedes-AMG CLA 35",
+    "ar": "مرسيدس-AMG CLA 35 رمادية"
+   },
+   "pitch": {
+    "fr": "Le coupé quatre portes en version AMG : 306 ch et transmission intégrale.",
+    "en": "The four-door coupé in AMG form: 306 hp and all-wheel drive.",
+    "ar": "الكوبيه ذات الأبواب الأربعة بنسخة AMG: 306 أحصنة ودفع رباعي."
+   }
+  },
+  {
+   "id": "porsche-macan",
+   "name": "Porsche Macan",
+   "make": "Porsche",
+   "model": "Macan",
+   "price": 2590,
+   "deposit": 20000,
+   "power": 265,
+   "accel": 6.4,
+   "seats": 5,
+   "len": 4.73,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/porsche-macan-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/porsche-macan-34-1200.webp"
+     }
+    ],
+    "aspect": 1.8244
+   },
+   "the": {
+    "fr": "la Porsche Macan",
+    "en": "the Porsche Macan",
+    "ar": "بورشه ماكان"
+   },
+   "alt": {
+    "fr": "Porsche Macan noire",
+    "en": "Black Porsche Macan",
+    "ar": "بورشه ماكان سوداء"
+   },
+   "pitch": {
+    "fr": "Le SUV compact de Porsche. Facile à garer à Casablanca, précis sur la corniche.",
+    "en": "Porsche's compact SUV. Easy to park in Casablanca, precise along the Corniche.",
+    "ar": "سيارة SUV المدمجة من بورشه. سهلة الركن في الدار البيضاء ودقيقة على الكورنيش."
+   }
+  },
+  {
+   "id": "audi-q8",
+   "name": "Audi Q8",
+   "make": "Audi",
+   "model": "Q8",
+   "price": 2590,
+   "deposit": 20000,
+   "power": 286,
+   "accel": 6.3,
+   "seats": 5,
+   "len": 5,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/audi-q8-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/audi-q8-34-1200.webp"
+     }
+    ],
+    "aspect": 1.9975
+   },
+   "the": {
+    "fr": "l'Audi Q8",
+    "en": "the Audi Q8",
+    "ar": "أودي Q8"
+   },
+   "alt": {
+    "fr": "Audi Q8 noire",
+    "en": "Black Audi Q8",
+    "ar": "أودي Q8 سوداء"
+   },
+   "pitch": {
+    "fr": "Le grand SUV coupé d'Audi. Cinq mètres de cuir et de silence pour les longs trajets.",
+    "en": "Audi's large coupé-SUV. Five metres of leather and quiet for long drives.",
+    "ar": "سيارة SUV كوبيه الكبيرة من أودي. خمسة أمتار من الجلد والهدوء للرحلات الطويلة."
+   }
+  },
+  {
+   "id": "mercedes-benz-classe-c",
+   "name": "Mercedes-Benz Classe C",
+   "make": "Mercedes-Benz",
+   "model": "Classe C",
+   "price": 1990,
+   "deposit": 10000,
+   "power": 204,
+   "accel": 7.3,
+   "seats": 5,
+   "len": 4.75,
+   "tags": [
+    "lux"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/mercedes-c-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/mercedes-c-34-1200.webp"
+     }
+    ],
+    "aspect": 2.1622
+   },
+   "the": {
+    "fr": "la Mercedes Classe C",
+    "en": "the Mercedes C-Class",
+    "ar": "مرسيدس الفئة C"
+   },
+   "alt": {
+    "fr": "Mercedes Classe C noire",
+    "en": "Black Mercedes C-Class",
+    "ar": "مرسيدس الفئة C سوداء"
+   },
+   "pitch": {
+    "fr": "La berline d'affaires par excellence. Sobre, confortable, toujours à sa place.",
+    "en": "The business saloon par excellence. Understated, comfortable, right for every occasion.",
+    "ar": "سيارة الأعمال بامتياز. أنيقة ومريحة ومناسبة لكل مناسبة."
+   }
+  },
+  {
+   "id": "volkswagen-touareg-r-line",
+   "name": "Volkswagen Touareg R-Line",
+   "make": "Volkswagen",
+   "model": "Touareg R-Line",
+   "price": 1890,
+   "deposit": 10000,
+   "power": 286,
+   "accel": 6.1,
+   "seats": 5,
+   "len": 4.88,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/vw-touareg-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/vw-touareg-34-1200.webp"
+     }
+    ],
+    "aspect": 1.9925
+   },
+   "the": {
+    "fr": "le Volkswagen Touareg R-Line",
+    "en": "the Volkswagen Touareg R-Line",
+    "ar": "فولكس فاغن طوارق R-Line"
+   },
+   "alt": {
+    "fr": "Volkswagen Touareg R-Line noir",
+    "en": "Black Volkswagen Touareg R-Line",
+    "ar": "فولكس فاغن طوارق R-Line سوداء"
+   },
+   "pitch": {
+    "fr": "Le Touareg en finition sportive : V6 de 286 ch, jantes 21 pouces, intérieur noir.",
+    "en": "The Touareg in sporty trim: 286 hp V6, 21-inch wheels, black interior.",
+    "ar": "طوارق بتجهيز رياضي: محرك V6 بقوة 286 حصاناً وجنوط 21 بوصة ومقصورة سوداء."
+   }
+  },
+  {
+   "id": "audi-q3",
+   "name": "Audi Q3",
+   "make": "Audi",
+   "model": "Q3",
+   "price": 1690,
+   "deposit": 10000,
+   "power": 150,
+   "accel": 9.2,
+   "seats": 5,
+   "len": 4.5,
+   "tags": [
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/audi-q3-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/audi-q3-34-1200.webp"
+     }
+    ],
+    "aspect": 1.9324
+   },
+   "the": {
+    "fr": "l'Audi Q3",
+    "en": "the Audi Q3",
+    "ar": "أودي Q3"
+   },
+   "alt": {
+    "fr": "Audi Q3 Sportback grise",
+    "en": "Grey Audi Q3 Sportback",
+    "ar": "أودي Q3 سبورتباك رمادية"
+   },
+   "pitch": {
+    "fr": "Un SUV compact et soigné, à l'aise en ville comme sur l'autoroute.",
+    "en": "A compact, well-finished SUV, at home in town and on the motorway.",
+    "ar": "سيارة SUV مدمجة ومتقنة، مريحة في المدينة وعلى الطريق السيار."
+   }
+  },
+  {
+   "id": "mercedes-benz-cla",
+   "name": "Mercedes-Benz CLA",
+   "make": "Mercedes-Benz",
+   "model": "CLA",
+   "price": 1590,
+   "deposit": 10000,
+   "power": 163,
+   "accel": 8.2,
+   "seats": 5,
+   "len": 4.69,
+   "tags": [
+    "lux"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/mercedes-cla-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/mercedes-cla-34-1200.webp"
+     }
+    ],
+    "aspect": 2.1277
+   },
+   "the": {
+    "fr": "la Mercedes CLA",
+    "en": "the Mercedes CLA",
+    "ar": "مرسيدس CLA"
+   },
+   "alt": {
+    "fr": "Mercedes CLA grise",
+    "en": "Grey Mercedes CLA",
+    "ar": "مرسيدس CLA رمادية"
+   },
+   "pitch": {
+    "fr": "La ligne d'un coupé, le confort d'une berline. L'élégance Mercedes à prix doux.",
+    "en": "A coupé's lines with a saloon's comfort. Mercedes elegance at a gentle price.",
+    "ar": "خطوط كوبيه وراحة سيدان. أناقة مرسيدس بسعر معقول."
+   }
+  },
+  {
+   "id": "range-rover-evoque-r-dynamic",
+   "name": "Range Rover Evoque R-Dynamic",
+   "make": "Range Rover",
+   "model": "Evoque R-Dynamic",
+   "price": 1490,
+   "deposit": 10000,
+   "power": 204,
+   "accel": 8.4,
+   "seats": 5,
+   "len": 4.37,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/range-rover-evoque-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/range-rover-evoque-34-1200.webp"
+     }
+    ],
+    "aspect": 1.8779
+   },
+   "the": {
+    "fr": "la Range Rover Evoque R-Dynamic",
+    "en": "the Range Rover Evoque R-Dynamic",
+    "ar": "رينج روفر إيفوك R-Dynamic"
+   },
+   "alt": {
+    "fr": "Range Rover Evoque R-Dynamic grise",
+    "en": "Grey Range Rover Evoque R-Dynamic",
+    "ar": "رينج روفر إيفوك R-Dynamic رمادية"
+   },
+   "pitch": {
+    "fr": "Le style Range Rover au format ville. Compacte, haute, très à l'aise à Casablanca.",
+    "en": "Range Rover style in a city size. Compact, high-riding, very much at home in Casablanca.",
+    "ar": "أناقة رينج روفر بحجم المدينة. مدمجة ومرتفعة ومريحة جداً في الدار البيضاء."
+   }
+  },
+  {
+   "id": "mercedes-benz-classe-a",
+   "name": "Mercedes-Benz Classe A",
+   "make": "Mercedes-Benz",
+   "model": "Classe A",
+   "price": 1390,
+   "deposit": 10000,
+   "power": 163,
+   "accel": 8.2,
+   "seats": 5,
+   "len": 4.42,
+   "tags": [
+    "lux"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/mercedes-a-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/mercedes-a-34-1200.webp"
+     }
+    ],
+    "aspect": 2.1592
+   },
+   "the": {
+    "fr": "la Mercedes Classe A",
+    "en": "the Mercedes A-Class",
+    "ar": "مرسيدس الفئة A"
+   },
+   "alt": {
+    "fr": "Mercedes Classe A noire",
+    "en": "Black Mercedes A-Class",
+    "ar": "مرسيدس الفئة A سوداء"
+   },
+   "pitch": {
+    "fr": "La compacte premium : écrans MBUX, finition AMG Line, parfaite pour la ville.",
+    "en": "The premium hatchback: MBUX screens, AMG Line trim, perfect for town.",
+    "ar": "السيارة المدمجة الفاخرة: شاشات MBUX وتجهيز AMG Line، مثالية للمدينة."
+   }
+  },
+  {
+   "id": "audi-a3",
+   "name": "Audi A3",
+   "make": "Audi",
+   "model": "A3",
+   "price": 1390,
+   "deposit": 5000,
+   "power": 150,
+   "accel": 8.4,
+   "seats": 5,
+   "len": 4.34,
+   "tags": [
+    "city"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/audi-a3-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/audi-a3-34-1200.webp"
+     }
+    ],
+    "aspect": 2.1108
+   },
+   "the": {
+    "fr": "l'Audi A3",
+    "en": "the Audi A3",
+    "ar": "أودي A3"
+   },
+   "alt": {
+    "fr": "Audi A3 Sportback noire",
+    "en": "Black Audi A3 Sportback",
+    "ar": "أودي A3 سبورتباك سوداء"
+   },
+   "pitch": {
+    "fr": "Une citadine premium, sobre et bien finie. Idéale pour un séjour en ville.",
+    "en": "A premium city car, understated and well built. Ideal for a stay in town.",
+    "ar": "سيارة مدينة فاخرة، أنيقة ومتقنة الصنع. مثالية لإقامة في المدينة."
+   }
+  },
+  {
+   "id": "volkswagen-touareg",
+   "name": "Volkswagen Touareg",
+   "make": "Volkswagen",
+   "model": "Touareg",
+   "price": 1290,
+   "deposit": 10000,
+   "power": 231,
+   "accel": 7.4,
+   "seats": 5,
+   "len": 4.88,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/vw-touareg-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/vw-touareg-34-1200.webp"
+     }
+    ],
+    "aspect": 1.9925
+   },
+   "the": {
+    "fr": "le Volkswagen Touareg",
+    "en": "the Volkswagen Touareg",
+    "ar": "فولكس فاغن طوارق"
+   },
+   "alt": {
+    "fr": "Volkswagen Touareg noir",
+    "en": "Black Volkswagen Touareg",
+    "ar": "فولكس فاغن طوارق سوداء"
+   },
+   "pitch": {
+    "fr": "Un grand SUV confortable et robuste, à l'aise sur autoroute comme sur piste.",
+    "en": "A large, comfortable, sturdy SUV, happy on the motorway or a dirt track.",
+    "ar": "سيارة SUV كبيرة ومريحة ومتينة، مناسبة للطريق السيار والمسالك."
+   }
+  },
+  {
+   "id": "volkswagen-tiguan",
+   "name": "Volkswagen Tiguan",
+   "make": "Volkswagen",
+   "model": "Tiguan",
+   "price": 990,
+   "deposit": 10000,
+   "power": 150,
+   "accel": 9.3,
+   "seats": 5,
+   "len": 4.51,
+   "tags": [
+    "lux",
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/vw-touareg-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/vw-touareg-34-1200.webp"
+     }
+    ],
+    "aspect": 1.9925
+   },
+   "the": {
+    "fr": "le Volkswagen Tiguan",
+    "en": "the Volkswagen Tiguan",
+    "ar": "فولكس فاغن تيغوان"
+   },
+   "alt": {
+    "fr": "Volkswagen Tiguan noir",
+    "en": "Black Volkswagen Tiguan",
+    "ar": "فولكس فاغن تيغوان سوداء"
+   },
+   "pitch": {
+    "fr": "Le SUV familial de Volkswagen : spacieux, économique, facile à vivre.",
+    "en": "Volkswagen's family SUV: roomy, economical, easy to live with.",
+    "ar": "سيارة SUV العائلية من فولكس فاغن: فسيحة واقتصادية وسهلة الاستعمال."
+   }
+  },
+  {
+   "id": "volkswagen-golf-8",
+   "name": "Volkswagen Golf 8",
+   "make": "Volkswagen",
+   "model": "Golf 8",
+   "price": 990,
+   "deposit": 5000,
+   "power": 150,
+   "accel": 8.5,
+   "seats": 5,
+   "len": 4.28,
+   "tags": [
+    "city"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/vw-golf-8-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/vw-golf-8-34-1200.webp"
+     }
+    ],
+    "aspect": 2.439
+   },
+   "the": {
+    "fr": "la Volkswagen Golf 8",
+    "en": "the Volkswagen Golf 8",
+    "ar": "فولكس فاغن غولف 8"
+   },
+   "alt": {
+    "fr": "Volkswagen Golf 8 noire",
+    "en": "Black Volkswagen Golf 8",
+    "ar": "فولكس فاغن غولف 8 سوداء"
+   },
+   "pitch": {
+    "fr": "La référence des compactes. Agile en ville, sereine sur la route.",
+    "en": "The benchmark hatchback. Nimble in town, composed on the open road.",
+    "ar": "مرجع السيارات المدمجة. رشيقة في المدينة وثابتة على الطريق."
+   }
+  },
+  {
+   "id": "volkswagen-t-roc",
+   "name": "Volkswagen T-Roc",
+   "make": "Volkswagen",
+   "model": "T-Roc",
+   "price": 890,
+   "deposit": 5000,
+   "power": 150,
+   "accel": 8.5,
+   "seats": 5,
+   "len": 4.23,
+   "tags": [
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/vw-t-roc-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/vw-t-roc-34-1200.webp"
+     }
+    ],
+    "aspect": 1.907
+   },
+   "the": {
+    "fr": "le Volkswagen T-Roc",
+    "en": "the Volkswagen T-Roc",
+    "ar": "فولكس فاغن T-Roc"
+   },
+   "alt": {
+    "fr": "Volkswagen T-Roc noir",
+    "en": "Black Volkswagen T-Roc",
+    "ar": "فولكس فاغن T-Roc سوداء"
+   },
+   "pitch": {
+    "fr": "Un petit SUV au look affirmé, pratique et économique au quotidien.",
+    "en": "A small SUV with a bold look, practical and economical every day.",
+    "ar": "سيارة SUV صغيرة بمظهر جريء، عملية واقتصادية يومياً."
+   }
+  },
+  {
+   "id": "hyundai-tucson",
+   "name": "Hyundai Tucson",
+   "make": "Hyundai",
+   "model": "Tucson",
+   "price": 790,
+   "deposit": 5000,
+   "power": 136,
+   "accel": 11.8,
+   "seats": 5,
+   "len": 4.5,
+   "tags": [
+    "suv"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/hyundai-tucson-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/hyundai-tucson-34-1200.webp"
+     }
+    ],
+    "aspect": 1.8328
+   },
+   "the": {
+    "fr": "le Hyundai Tucson",
+    "en": "the Hyundai Tucson",
+    "ar": "هيونداي توسان"
+   },
+   "alt": {
+    "fr": "Hyundai Tucson noir",
+    "en": "Black Hyundai Tucson",
+    "ar": "هيونداي توسان سوداء"
+   },
+   "pitch": {
+    "fr": "Un SUV spacieux et bien équipé, pour la famille et les bagages.",
+    "en": "A roomy, well-equipped SUV for the family and the luggage.",
+    "ar": "سيارة SUV فسيحة ومجهزة جيداً للعائلة والأمتعة."
+   }
+  },
+  {
+   "id": "hyundai-accent",
+   "name": "Hyundai Accent",
+   "make": "Hyundai",
+   "model": "Accent",
+   "price": 490,
+   "deposit": 5000,
+   "power": 100,
+   "accel": 12.2,
+   "seats": 5,
+   "len": 4.39,
+   "tags": [
+    "city"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/hyundai-accent-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/hyundai-accent-34-1200.webp"
+     }
+    ],
+    "aspect": 1.93
+   },
+   "the": {
+    "fr": "la Hyundai Accent",
+    "en": "the Hyundai Accent",
+    "ar": "هيونداي أكسنت"
+   },
+   "alt": {
+    "fr": "Hyundai Accent noire",
+    "en": "Black Hyundai Accent",
+    "ar": "هيونداي أكسنت سوداء"
+   },
+   "pitch": {
+    "fr": "Une berline simple et fiable, avec un vrai coffre. Le bon choix pour rouler malin.",
+    "en": "A simple, reliable saloon with a proper boot. The smart choice for getting around.",
+    "ar": "سيارة سيدان بسيطة وموثوقة بصندوق واسع. الخيار الذكي للتنقل."
+   }
+  },
+  {
+   "id": "renault-clio-5",
+   "name": "Renault Clio 5",
+   "make": "Renault",
+   "model": "Clio 5",
+   "price": 350,
+   "deposit": 5000,
+   "power": 90,
+   "accel": 12.2,
+   "seats": 5,
+   "len": 4.05,
+   "tags": [
+    "city"
+   ],
+   "featured": false,
+   "image": {
+    "webp": [
+     {
+      "w": 800,
+      "src": "assets/cars/renault-clio-5-34-800.webp"
+     },
+     {
+      "w": 1200,
+      "src": "assets/cars/renault-clio-5-34-1200.webp"
+     }
+    ],
+    "aspect": 1.8735
+   },
+   "the": {
+    "fr": "la Renault Clio 5",
+    "en": "the Renault Clio 5",
+    "ar": "رونو كليو 5"
+   },
+   "alt": {
+    "fr": "Renault Clio 5 noire",
+    "en": "Black Renault Clio 5",
+    "ar": "رونو كليو 5 سوداء"
+   },
+   "pitch": {
+    "fr": "La citadine facile : se gare partout, consomme peu, parfaite pour la ville.",
+    "en": "The easy city car: parks anywhere, sips fuel, perfect for town.",
+    "ar": "سيارة المدينة السهلة: تُركن في أي مكان واستهلاكها قليل، مثالية للمدينة."
+   }
+  }
+ ],
+ "places": [
+  {
+   "id": "airport",
+   "fee": 0
+  },
+  {
+   "id": "hotel",
+   "fee": 0
+  },
+  {
+   "id": "private",
+   "fee": 0
+  },
+  {
+   "id": "rabat",
+   "fee": 1500
+  },
+  {
+   "id": "marrakech",
+   "fee": 3500
+  }
+ ],
+ "business": {
+  "name": "CARSW6",
+  "whatsapp": null,
+  "whatsappDisplay": null,
+  "depositReleaseHours": null,
+  "insuranceExcess": null,
+  "minAge": null,
+  "licenseYears": null,
+  "acceptCrypto": true,
+  "cryptoWallets": [
+   {
+    "coin": "USDT",
+    "network": "TRC-20 (Tron)",
+    "address": "TEST-USDT-ADDRESS-NOT-REAL",
+    "rateId": "tether",
+    "decimals": 2
+   },
+   {
+    "coin": "BTC",
+    "network": "Bitcoin",
+    "address": "TEST-BTC-ADDRESS-NOT-REAL",
+    "rateId": "bitcoin",
+    "decimals": 6
+   },
+   {
+    "coin": "ETH",
+    "network": "Ethereum (ERC-20)",
+    "address": "TEST-ETH-ADDRESS-NOT-REAL",
+    "rateId": "ethereum",
+    "decimals": 5
+   }
+  ]
+ }
+}
