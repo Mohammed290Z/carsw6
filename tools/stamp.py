@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 REFS = {
     "index.html": [("assets/css/site.css", "assets/css/site.css"), ("assets/js/app.js", "assets/js/app.js")],
     "legal.html": [("assets/css/site.css", "assets/css/site.css")],
+    "app.html": [("assets/css/site.css", "assets/css/site.css"), ("./assets/js/config.js", "assets/js/config.js")],
     "admin/index.html": [("admin.css", "admin/admin.css"), ("admin.js", "admin/admin.js")],
     "assets/js/app.js": [("./config.js", "assets/js/config.js"), ("./i18n.js", "assets/js/i18n.js"),
                          ("./cars-meta.js", "assets/js/cars-meta.js")],
@@ -37,7 +38,7 @@ def digest(path: str) -> str:
 
 def main():
     # leaves first, so a module's own imports are stamped before its hash is taken
-    order = ["assets/js/app.js", "admin/admin.js", "index.html", "legal.html", "admin/index.html"]
+    order = ["assets/js/app.js", "admin/admin.js", "index.html", "legal.html", "app.html", "admin/index.html"]
     for holder in order:
         text = (ROOT / holder).read_text()
         for ref, target in REFS[holder]:

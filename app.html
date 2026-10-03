@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Application CARSW6</title>
+<meta name="description" content="Réservez votre voiture à tout moment avec l'application CARSW6, sur iPhone et Android.">
+<meta name="theme-color" content="#0B1026">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css?v=9bd4c0b1a4">
+<style>
+  .get{min-height:100svh;display:grid;place-items:center;padding:calc(var(--header-h) + 24px) var(--edge) 64px;text-align:center}
+  .get-in{max-width:520px;display:grid;gap:22px;justify-items:center}
+  .get h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(40px,8vw,64px);line-height:1}
+  html[lang="ar"] .get h1{font-style:normal;line-height:1.3}
+  .get p{color:var(--mist);font-size:18px;max-width:40ch}
+  .stores{display:grid;gap:12px;width:min(100%,340px);margin-top:8px}
+  .stores .btn{width:100%}
+  .stores .btn.ghost{background:none;color:var(--sand);box-shadow:inset 0 0 0 1px rgba(239,232,220,.35)}
+  .stores .btn.ghost:hover{color:var(--ink)}
+  .test{font-size:13px;color:var(--mist)}
+  .soon{padding:14px 18px;border-radius:14px;box-shadow:inset 0 0 0 1px var(--line);color:var(--sand)}
+  .back{color:var(--mist);text-underline-offset:3px}
+</style>
+</head>
+<body>
+<header class="scrolled">
+  <a class="logo" href="./"><img src="assets/brand/carsw6-logo-sand.svg" alt="CARSW6" width="132" height="33"></a>
+</header>
+<main class="get">
+  <div class="get-in">
+    <h1 id="title">L'application CARSW6</h1>
+    <p id="lede">Réservez votre voiture à tout moment, suivez vos réservations et recevez la confirmation de votre concierge sur votre téléphone.</p>
+    <div class="stores" id="stores"></div>
+    <a class="back" href="./" id="back">Retour au site</a>
+  </div>
+</main>
+<script type="module">
+  import { APP } from './assets/js/config.js?v=59f9e9cb11';
+  const T = {
+    fr: { title: 'L\'application CARSW6', lede: 'Réservez votre voiture à tout moment, suivez vos réservations et recevez la confirmation de votre concierge sur votre téléphone.',
+      ios: 'Télécharger sur l\'App Store', android: 'Disponible sur Google Play', tf: 'Version de test pour iPhone (TestFlight)', apk: 'Version de test pour Android (APK)',
+      test: 'Version de test, avant la sortie sur les stores.', soon: 'L\'application arrive bientôt sur iPhone et Android. En attendant, réservez sur le site.', back: 'Retour au site' },
+    en: { title: 'The CARSW6 app', lede: 'Reserve your car anytime, follow your bookings and get your concierge\'s confirmation on your phone.',
+      ios: 'Download on the App Store', android: 'Get it on Google Play', tf: 'iPhone test version (TestFlight)', apk: 'Android test version (APK)',
+      test: 'Test version, before the store release.', soon: 'The app is coming soon to iPhone and Android. Meanwhile, book on the website.', back: 'Back to the website' },
+    ar: { title: 'تطبيق CARSW6', lede: 'احجز سيارتك في أي وقت، تابع حجوزاتك واستلم تأكيد الكونسيرج على هاتفك.',
+      ios: 'حمّله من App Store', android: 'متوفر على Google Play', tf: 'نسخة تجريبية للآيفون (TestFlight)', apk: 'نسخة تجريبية لأندرويد (APK)',
+      test: 'نسخة تجريبية قبل الإصدار على المتاجر.', soon: 'التطبيق قادم قريباً على الآيفون وأندرويد. في الأثناء احجز عبر الموقع.', back: 'العودة إلى الموقع' },
+  };
+  let lang = 'fr'; try { lang = localStorage.getItem('lang') || 'fr'; } catch {}
+  const q = new URLSearchParams(location.search).get('lang'); if (q in T) lang = q;
+  if (!(lang in T)) lang = 'fr';
+  const t = T[lang];
+  document.documentElement.lang = lang; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.title = t.title;
+  for (const id of ['title', 'lede', 'back']) document.getElementById(id).textContent = t[id];
+
+  const ua = navigator.userAgent;
+  const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const android = /Android/.test(ua);
+  // on a phone, go straight to its store once the listing is live
+  if (ios && APP.appStore) location.replace(APP.appStore);
+  else if (android && APP.playStore) location.replace(APP.playStore);
+
+  const links = [
+    APP.appStore && { href: APP.appStore, label: t.ios, primary: !android },
+    APP.playStore && { href: APP.playStore, label: t.android, primary: !ios },
+    !APP.appStore && APP.testflight && { href: APP.testflight, label: t.tf, test: true, primary: ios },
+    !APP.playStore && APP.androidApk && { href: APP.androidApk, label: t.apk, test: true, primary: android },
+  ].filter(Boolean).sort((a, b) => b.primary - a.primary);
+  const box = document.getElementById('stores');
+  if (!links.length) {
+    box.innerHTML = `<p class="soon"></p>`; box.firstChild.textContent = t.soon;
+  } else {
+    for (const l of links) {
+      const a = Object.assign(document.createElement('a'), { href: l.href, className: `btn${l.primary ? '' : ' ghost'}`, textContent: l.label, rel: 'noopener' });
+      box.append(a);
+    }
+    if (links.some(l => l.test)) box.insertAdjacentHTML('beforeend', `<p class="test">${t.test}</p>`);
+  }
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
-import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=01dac72443';
-import { LANGS, STRINGS } from './i18n.js?v=73910a1fcd';
+import { APP, BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=59f9e9cb11';
+import { LANGS, STRINGS } from './i18n.js?v=40a7cb8a15';
 import META from './cars-meta.js?v=b40539bdb0';
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -61,6 +61,19 @@ $$('.langs button').forEach(b => b.addEventListener('click', () => {
   lang = b.dataset.lang; store.set('lang', lang);
   applyLang();
 }));
+
+/* ================= App download banner =================
+   Only once there is somewhere to download the app from (config.js APP), or ?appbanner to preview.
+   Closing it is remembered on this device. */
+const appBanner = $('#appBanner');
+let bannerOff = false; try { bannerOff = localStorage.getItem('appBanner') === 'off'; } catch {}
+if ((Object.values(APP).some(Boolean) || params.has('appbanner')) && !bannerOff) {
+  appBanner.hidden = false; root.classList.add('has-app-banner');
+}
+$('.app-banner-close').addEventListener('click', () => {
+  appBanner.hidden = true; root.classList.remove('has-app-banner');
+  try { localStorage.setItem('appBanner', 'off'); } catch {}
+});
 
 /* ================= Menu (below 980px) =================
    A modal <dialog>: focus trap, Esc and inert page come with it. Any link or the close button dismisses it. */

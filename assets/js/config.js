@@ -2,6 +2,17 @@
    A value left at null is not shown on the page, so nothing unconfirmed goes live.
    On localhost, a banner lists whatever is still missing. */
 
+/* The customer app (mobile/). Fill in each link once it exists; never a placeholder. The site's
+   app banner only appears when at least one is set (preview it anyway with ?appbanner), and
+   app.html sends iPhones to the App Store and Android phones to Google Play, falling back to the
+   test builds (TestFlight invite, Android APK from EAS) while the store listings aren't live. */
+export const APP = {
+  appStore: null,     // e.g. 'https://apps.apple.com/app/carsw6/id0000000000'
+  playStore: null,    // e.g. 'https://play.google.com/store/apps/details?id=com.carsw6.app'
+  testflight: null,   // public TestFlight link, e.g. 'https://testflight.apple.com/join/XXXXXXXX'
+  androidApk: null,   // EAS internal-distribution link for the preview APK
+};
+
 export const BUSINESS = {
   name: 'CARSW6',
 

@@ -159,7 +159,7 @@ site_url = "https://antennax78.github.io/carsw6/admin/"
 # The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
 # external_url = ""
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["https://antennax78.github.io/carsw6/admin/", "http://localhost:4175/admin/"]
+additional_redirect_urls = ["https://antennax78.github.io/carsw6/admin/", "http://localhost:4175/admin/", "carsw6://"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
 # JWT issuer URL. If not set, defaults to auth.external_url.
@@ -172,8 +172,10 @@ enable_refresh_token_rotation = true
 # Requires enable_refresh_token_rotation = true.
 refresh_token_reuse_interval = 10
 # Allow/disallow new user signups to your project.
-# Off: staff accounts are created by an admin from the panel (invite), never by self sign-up.
-enable_signup = false
+# On since the customer app: customers create their account by signing in with an email code.
+# That makes them `authenticated` but never staff — staff are still only added by an admin from the
+# panel (public.staff), and every staff permission checks public.is_staff(). See the customer_app migration.
+enable_signup = true
 # Allow/disallow anonymous sign-ins to your project.
 enable_anonymous_sign_ins = false
 # Allow/disallow testing manual linking of accounts
@@ -218,7 +220,6 @@ web3 = 30
 
 [auth.email]
 # This is the email provider switch itself: false would disable email LOGIN too, not just sign-ups.
-# New accounts are already blocked by auth.enable_signup = false above.
 enable_signup = true
 # If enabled, a user will be required to confirm any email change on both the old, and new email
 # addresses. If disabled, only the new email is required to confirm.
@@ -229,20 +230,32 @@ enable_confirmations = true
 secure_password_change = false
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
 max_frequency = "1m0s"
-# Number of characters used in the email OTP.
-otp_length = 8
-# Number of seconds before the email OTP expires (defaults to 1 hour).
-otp_expiry = 3600
+# Number of characters used in the email OTP (the customer app's sign-in code).
+otp_length = 6
+# Number of seconds before the email OTP expires: 10 minutes.
+otp_expiry = 600
 
-# Use a production-ready SMTP server
+# REQUIRED before customers use the app: Supabase's built-in mailer sends only a couple of emails
+# an hour, far too few for sign-in codes. Resend (already planned for booking alerts) works:
+# create a key at resend.com, verify the sending domain, set RESEND_API_KEY, then uncomment.
 # [auth.email.smtp]
 # enabled = true
-# host = "smtp.sendgrid.net"
-# port = 587
-# user = "apikey"
-# pass = "env(SENDGRID_API_KEY)"
-# admin_email = "admin@email.com"
-# sender_name = "Admin"
+# host = "smtp.resend.com"
+# port = 465
+# user = "resend"
+# pass = "env(RESEND_API_KEY)"
+# admin_email = "no-reply@your-domain.ma"
+# sender_name = "CARSW6"
+
+# sign-in codes for the customer app: a new customer gets the "confirmation" email, a returning one
+# the "magic link" email; both show the 6-digit code ({{ .Token }})
+[auth.email.template.confirmation]
+subject = "Votre code CARSW6 : {{ .Token }}"
+content_path = "./supabase/templates/code.html"
+
+[auth.email.template.magic_link]
+subject = "Votre code CARSW6 : {{ .Token }}"
+content_path = "./supabase/templates/code.html"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

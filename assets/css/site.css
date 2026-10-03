@@ -73,6 +73,26 @@ section[id]{scroll-margin-top:100px}
 .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(120% 90% at 60% 55%, transparent 45%, rgba(11,16,38,.85) 100%)}
 
+/* ---------- App download banner ----------
+   A slim strip inside the fixed header, above the nav. While it shows, --header-h grows by its height,
+   so every offset that follows the header (hero, showroom, menu, anchors) makes room for it. */
+:root{--banner-h:0px}
+html.has-app-banner{--banner-h:44px;--header-h:calc(84px + var(--banner-h))}
+html.has-app-banner header{padding-top:var(--banner-h)}
+.app-banner{position:absolute;inset-block-start:0;inset-inline:0;height:var(--banner-h);display:flex;align-items:center;gap:14px;
+  padding-inline:max(var(--gutter), env(safe-area-inset-left)) max(calc(var(--gutter) - 10px), env(safe-area-inset-right));
+  background:linear-gradient(90deg, rgba(217,178,111,.16), rgba(217,178,111,.08));border-bottom:1px solid rgba(217,178,111,.28);font-size:14px}
+.app-banner p{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--sand)}
+.app-banner .short{display:none}
+.app-banner-btn{position:relative;flex:none;display:inline-flex;align-items:center;min-height:32px;padding:0 16px;border-radius:32px;background:var(--brass);color:var(--ink);
+  font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap;transition:background .2s}
+.app-banner-btn:hover{background:#f0d29c}
+.app-banner-btn::after{content:"";position:absolute;inset:-6px -4px}   /* 44px tap area inside the 44px strip */
+.app-banner-close{flex:none;position:relative;width:44px;height:44px;border:0;background:none;color:var(--mist);cursor:pointer}
+.app-banner-close::before,.app-banner-close::after{content:"";position:absolute;left:15px;top:21px;width:14px;height:1.5px;background:currentColor;transform:rotate(45deg)}
+.app-banner-close::after{transform:rotate(-45deg)}
+.app-banner-close:hover{color:var(--sand)}
+
 /* ---------- Header ---------- */
 header{position:fixed;inset-block-start:0;inset-inline:0;z-index:30;display:flex;align-items:center;gap:32px;
   height:var(--header-h);padding:0 max(var(--gutter), env(safe-area-inset-right)) 0 max(var(--gutter), env(safe-area-inset-left));transition:background .4s}
@@ -373,6 +393,11 @@ footer.site a{text-underline-offset:3px}
 /* ---------- Phone: no 3D, stacked hero, swipeable fleet, bottom bar ---------- */
 @media (max-width:759px){
   :root{--header-h:64px}
+  html.has-app-banner{--header-h:calc(64px + var(--banner-h))}
+  .app-banner{gap:10px;font-size:13px}
+  .app-banner .long{display:none}
+  .app-banner .short{display:inline}
+  .app-banner-btn{padding:0 12px}
   body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
   header{gap:12px}
   /* phone header: logo + menu; language and booking live in the menu sheet and the bottom bar */
