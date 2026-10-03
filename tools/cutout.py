@@ -20,6 +20,9 @@ with light sharpening, and identical output size and compression.
 The studio watermark (and any other artwork that isn't touching the car) is dropped:
 only the largest connected shape — the car plus its contact shadow — is kept.
 
+Car outlines: if assets/cars/masks/<name>.png exists (made by tools/masks.py), it decides what is car
+and what is background where colour alone can't (white reflections touching the silhouette).
+
 Usage:  python tools/cutout.py                 all photos      (needs pillow, numpy, scipy)
         python tools/cutout.py audi-rs3-34     just these, keeping the others' data
 """
@@ -53,6 +56,7 @@ RIM_WIDTH = 4.0      # px at source resolution
 RIM_STRENGTH = .7
 CAR_SPAN = 1600      # output width of the car itself, px — same for every view
 ANCHORS = OUT / "anchors.json"
+MASKS = OUT / "masks"            # car outlines from tools/masks.py (optional, per photo)
 META_JS = ROOT / "assets/js/cars-meta.js"
 RING_MARGIN_X = 1.18    # ring reaches this far past the outermost wheels…
 RING_MIN_X = 1.04       # …and at least just past the body's own width
@@ -128,10 +132,26 @@ def cut(path):
         if (blob[sl] & (lo[sl] > 230)).sum() > 40 and frac(sl[0].stop) >= .78:
             bg |= ndimage.binary_dilation(blob, iterations=3) & (lo > BG_THRESHOLD) & lower
 
+    # the model's car outline, when tools/masks.py made one for this photo. Colour alone can't tell
+    # a white reflection on a glossy bonnet or roof from the white studio it touches; the model can.
+    # What it calls car is never background, and what it is sure is background (the watermark, a
+    # shadow baked into the photo) goes, so the page's own shadow is the only one.
+    ml = None
+    if (MASKS / f"{path.stem}.png").exists():
+        ml = np.asarray(Image.open(MASKS / f"{path.stem}.png").convert("L").resize((W, H), Image.BILINEAR)).astype(float)
+        bg &= ~ndimage.binary_erosion(ml > 160, iterations=2)
+        # "sure background" only outside the car's filled silhouette: the studio seen through the
+        # windows is background to the model, but it belongs to the car here
+        body_filled = ndimage.binary_fill_holes(ndimage.binary_closing(ml > 25, iterations=6))
+        ml = np.where(body_filled, np.maximum(ml, 25), ml)
+        bg |= ml < 25
+
     # 2. inside the background, un-mix white so soft edges and shadows become translucent black;
     #    alpha reaches 1 exactly at the threshold, so it meets the solid car without a seam
     alpha = np.where(bg, (255 - lo) / (255 - BG_THRESHOLD), 1.0)
     alpha = np.clip((alpha - .04) / .96, 0, 1)
+    if ml is not None:
+        alpha = np.where(ml < 25, 0.0, alpha)
     #    background pixels are shadow or edge falloff, so they carry black, never grey
     color = np.where(bg[..., None], 0.0, rgb)
 

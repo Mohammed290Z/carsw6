@@ -1,6 +1,6 @@
 import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=01dac72443';
-import { LANGS, STRINGS } from './i18n.js?v=c8decc71b9';
-import META from './cars-meta.js?v=e1c1ce5597';
+import { LANGS, STRINGS } from './i18n.js?v=73910a1fcd';
+import META from './cars-meta.js?v=c0c2c7707f';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -404,6 +404,7 @@ form.addEventListener('submit', async e => {
   } catch (err) {
     if (err.message === 'rate_limited') { errBox.textContent = t('err.rate'); return; }
     if (err.message === 'start_in_past') { errBox.textContent = t('err.past'); return; }
+    if (err.message === 'car_unavailable') { errBox.textContent = t('err.unavailable'); return; }
     errBox.textContent = t('err.send', { number: BUSINESS.whatsappDisplay });
     if (BUSINESS.whatsapp) errBox.insertAdjacentHTML('beforeend', ` <a href="${waUrl(msg)}" target="_blank" rel="noopener">${t('wa.open')}</a>`);
   } finally {

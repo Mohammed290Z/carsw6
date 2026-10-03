@@ -1,7 +1,8 @@
 """Trace the CARSW6 wordmark out of the studio photos into a single-colour SVG.
 
-The same logo sits in the bottom-left corner of every original photo; this takes one copy,
-upsamples it, and traces it with potrace. The SVG uses currentColor so CSS sets its colour.
+The same logo sits in the bottom-left corner of the studio photos; assets/brand/logo-source.png is
+one copy of it, cut from the first photo shoot so the brand doesn't depend on which cars are in the
+fleet. This upsamples it and traces it with potrace. The SVG uses currentColor so CSS sets its colour.
 
 Usage:  python tools/logo.py      (needs pillow, numpy, potracer)
 """
@@ -12,15 +13,13 @@ import potrace
 from PIL import Image, ImageFilter
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "assets/cars/originals/audi-rs3-side.png"
+SRC = ROOT / "assets/brand/logo-source.png"
 OUT = ROOT / "assets/brand/carsw6-logo.svg"
 
 
 def logo_mask():
     """The wordmark as a boolean array (ink = True), 4x the size it appears in the photos."""
-    im = Image.open(SRC).convert("L")
-    W, H = im.size
-    region = im.crop((int(W * .06), int(H * .74), int(W * .46), int(H * .93)))
+    region = Image.open(SRC).convert("L")
     big = region.resize((region.width * 4, region.height * 4), Image.LANCZOS).filter(ImageFilter.GaussianBlur(2))
     ink = np.asarray(big) < 128
     ys, xs = np.where(ink)
