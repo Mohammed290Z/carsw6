@@ -180,6 +180,17 @@ def cut(path):
         return x, y
     (lx, ly), (rx, ry) = contact(cx0, cx0 + third), contact(cx1 - third, cx1)
     ground = ly + (np.arange(W) - lx) * (ry - ly) / max(rx - lx, 1)
+    # in a three-quarter view the near front tyre sits between those two and lower than both, so
+    # the straight line runs through it; with the model's outline, never let the line rise above
+    # the car's own lowest pixel in any column (this used to slice that tyre flat)
+    lowest = max(ly, ry)
+    if ml is not None:
+        car_px, n = ndimage.label(ml > 128)          # the car alone: the model also outlines the watermark
+        car_px = car_px == np.argmax(np.bincount(car_px.ravel())[1:]) + 1 if n else car_px > 0
+        has = car_px.any(0)
+        bottom = np.where(has, H - 1 - np.argmax(car_px[::-1], 0), -1)
+        ground = np.maximum(ground, bottom)
+        lowest = max(lowest, int(bottom.max()))
 
     # everything under the ground line is cast shadow: make it black and let the floor show through
     below = np.arange(H)[:, None] > ground[None, :] + 2
@@ -243,14 +254,14 @@ def cut(path):
         return img, {
             "w": img.shape[1], "h": img.shape[0],
             # ground contact, as fractions of the trimmed image
-            "groundY": round(float(max(ly, ry) - ty0) / img.shape[0], 4),
+            "groundY": round(float(lowest - ty0) / img.shape[0], 4),
             "carLeft": round(float(cx0 - tx0) / img.shape[1], 4),
             "carRight": round(float(cx1 - tx0) / img.shape[1], 4),
             # where this cutout sits in the original photo: maps anchors onto it
             "crop": [int(tx0), int(ty0), int(img.shape[1]), int(img.shape[0])],
         }
-    staged = trimmed(out, min(int(max(ly, ry) + car_h * REFLECT_DEPTH) + m, canvas_h))
-    web = trimmed(bare, min(int(max(ly, ry)) + m, H))
+    staged = trimmed(out, min(int(lowest + car_h * REFLECT_DEPTH) + m, canvas_h))
+    web = trimmed(bare, min(int(lowest) + m, H))
     return staged, web
 
 

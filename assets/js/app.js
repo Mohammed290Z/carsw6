@@ -1,6 +1,6 @@
 import { BUSINESS, CARS, PLACES, SUPABASE } from './config.js?v=01dac72443';
 import { LANGS, STRINGS } from './i18n.js?v=73910a1fcd';
-import META from './cars-meta.js?v=c0c2c7707f';
+import META from './cars-meta.js?v=b40539bdb0';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
